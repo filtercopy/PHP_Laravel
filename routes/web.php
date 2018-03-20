@@ -14,3 +14,14 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Auth::routes();
+
+
+Route::get('/maintain/employee', function () {
+    return view('maintainemployee');
+});
+
+Route::get('/maintain/project', function () {
+    return view('maintainproject');
+});
