@@ -15,7 +15,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-default navbar-static-top">
+        <nav class="navbar navbar-inverse navbar-static-top">
             <div class="container">
                 <div class="navbar-header">
 
@@ -36,8 +36,12 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        <li><a href="{{ url('maintain/employee') }}">Maintain Employee</a></li>
+                        <li class="active"><a href="{{ url('maintain/employee') }}">Maintain Employee</a></li>
                         <li><a href="{{ url('maintain/project') }}">Maintain Project</a></li>
+                        <li><a href="{{ url('manage/employee') }}">Manage Employee</a></li>
+                        <li><a href="{{ url('manage/project') }}">Manage Project</a></li>
+                        <li><a href="{{ url('manage/generatesummary') }}">Generate Summary</a></li>
+                        <li><a href="{{ url('employee/viewtimesheet') }}">View Timesheet</a></li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

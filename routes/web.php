@@ -25,3 +25,19 @@ Route::get('/maintain/employee', function () {
 Route::get('/maintain/project', function () {
     return view('maintainproject');
 });
+
+Route::get('/manage/employee', function () {
+    return view('manageemployee');
+});
+
+Route::get('/manage/project', function () {
+    return view('manageproject');
+});
+
+Route::get('/manage/generatesummary', function () {
+    return view('generatesummary');
+});
+
+Route::get('/employee/viewtimesheet', function () {
+    return view('viewtimesheet');
+});
