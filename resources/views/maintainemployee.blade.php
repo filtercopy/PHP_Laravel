@@ -33,7 +33,7 @@
                             <td>{{ $employee->Address }}</td>
                             <td>{{ $employee->EmailID}}</td>
                             <td>{{ $employee->JobTitle}}</td> 
-                            <td>{{ $employee->Salary}}</td>                         
+                            <td>${{ $employee->Salary}}</td>                         
                             <td>
                                 <p data-placement="top" data-toggle="tooltip" title="Edit">
                                 <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" >
@@ -55,7 +55,7 @@
     <div class="modal fade" id="addNewEmpModal" role="dialog" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-md">
           <!-- Modal content-->
-          <form role="form" action = "/insertemployeedetails" method = "post">
+          <form role="form" action = "/maintain/employee" method = "post">
             <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
             <div class="modal-content">
                 <div class="modal-header">

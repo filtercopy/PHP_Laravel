@@ -36,12 +36,11 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="{{ url('maintain/employee') }}">Maintain Employee</a></li>
-                        <li><a href="{{ url('maintain/project') }}">Maintain Project</a></li>
-                        <li><a href="{{ url('manage/employee') }}">Manage Employee</a></li>
-                        <li><a href="{{ url('manage/project') }}">Manage Project</a></li>
-                        <li><a href="{{ url('manage/generatesummary') }}">Generate Summary</a></li>
-                        <li><a href="{{ url('employee/viewtimesheet') }}">View Timesheet</a></li>
+                        <li class="{{ Request::is('maintain/employee') ? 'active' : '' }}"><a href="{{ url('maintain/employee') }}">Maintain Employee</a></li>
+                        <li class="{{ Request::is('maintain/project') ? 'active' : '' }}"><a href="{{ url('maintain/project') }}">Maintain Project</a></li>
+                        <li class="{{ Request::is('manage/project') ? 'active' : '' }}"><a href="{{ url('manage/project') }}">Manage Project</a></li>
+                        <li class="{{ Request::is('manage/generatesummary') ? 'active' : '' }}"><a href="{{ url('manage/generatesummary') }}">Generate Summary</a></li>
+                        <li class="{{ Request::is('employee/viewtimesheet') ? 'active' : '' }}"><a href="{{ url('employee/viewtimesheet') }}">View Timesheet</a></li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

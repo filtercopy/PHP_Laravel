@@ -19,15 +19,11 @@ Auth::routes();
 
 Route::get('maintain/employee','MaintainEmployeeController@index');
 
-Route::post('insertemployeedetails','MaintainEmployeeController@insert');
+Route::post('maintain/employee','MaintainEmployeeController@insert');
 
 Route::get('maintain/project','MaintainProjectController@index');
 
-Route::post('insertprojectdetails','MaintainProjectController@insert');
-
-Route::get('/manage/employee', function () {
-    return view('manageemployee');
-});
+Route::post('maintain/project','MaintainProjectController@insert');
 
 Route::get('/manage/project', function () {
     return view('manageproject');

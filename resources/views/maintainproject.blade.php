@@ -50,7 +50,7 @@
   <div class="modal fade" id="addNewProjectModal" role="dialog" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-md">
         <!-- Modal content-->
-        <form role="form" action = "/insertprojectdetails" method = "post">
+        <form role="form" action = "/maintain/project" method = "post">
           <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
           <div class="modal-content">
               <div class="modal-header">
