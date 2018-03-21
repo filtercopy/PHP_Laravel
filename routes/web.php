@@ -17,14 +17,13 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('maintain/employee','MaintainEmployeeController@index');
 
-Route::get('/maintain/employee', function () {
-    return view('maintainemployee');
-});
+Route::post('insertemployeedetails','MaintainEmployeeController@insert');
 
-Route::get('/maintain/project', function () {
-    return view('maintainproject');
-});
+Route::get('maintain/project','MaintainProjectController@index');
+
+Route::post('insertprojectdetails','MaintainProjectController@insert');
 
 Route::get('/manage/employee', function () {
     return view('manageemployee');
