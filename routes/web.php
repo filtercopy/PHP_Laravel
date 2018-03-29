@@ -25,9 +25,13 @@ Route::get('maintain/project','MaintainProjectController@index');
 
 Route::post('maintain/project','MaintainProjectController@insert');
 
-Route::get('/manage/project', function () {
-    return view('manageproject');
-});
+Route::get('manage/project','ManageProjectController@index');
+
+Route::get('manage/project/showdetails','ManageProjectController@showprojectdetails');
+
+//Route::post('manage/project','ManageProjectController@showprojectdetails');
+
+//Route::post('manage/project/addemployee','ManageProjectController@addemployee');
 
 Route::get('/manage/generatesummary', function () {
     return view('generatesummary');
