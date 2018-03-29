@@ -29,4 +29,8 @@ class MaintainEmployeeController extends Controller
 
 	    return $this->index();
 	}
+
+	public function updateEmployee(Request $request) {
+
+	}
 }

@@ -14,7 +14,7 @@
   <div class="row">
       <div class="col-md-10">
           <div class="table-responsive">
-              <table id="mytable" class="table table-bordred table-striped">
+              <table id="mytable" class="table table-bordred table-striped table-hover">
                   <thead>
                       <th>Project ID</th>
                       <th>Project Title</th>
