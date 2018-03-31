@@ -6,13 +6,16 @@ use Illuminate\Http\Request;
 use DB;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\employee;
 
 class MaintainEmployeeController extends Controller
 {
     public function index()
     {
      	$employees = DB::select('select UserID, FullName, Address, EmailID, JobTitle, Salary from employee');
-     	return view('maintainemployee',['employees'=>$employees]);
+     	$employees_update = employee::find('145255');
+     	//dd($employees_update);
+     	return view('maintainemployee',['employees'=>$employees,'employees_update'=>$employees_update]);
   	}
 
    	public function insert(Request $request)
@@ -30,7 +33,18 @@ class MaintainEmployeeController extends Controller
 	    return $this->index();
 	}
 
-	public function updateEmployee(Request $request) {
+	public function show($UserID) 
+	{
+		$employees = employee::all();
+		$employees_update = employee::find($UserID);
+		//dd($employees_update);
+		return view('maintainemployee',['employees'=>$employees,'employees_update'=>$employees_update]);
+	}
+
+	public function updateEmployee(Request $request) 
+	{
 
 	}
+
+	
 }

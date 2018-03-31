@@ -31,7 +31,7 @@ class ManageProjectController extends Controller
 
     	$addemployees = DB::select('select UserID, FullName, Address, EmailID, JobTitle from employee where JobTitle != "Supervisor"  and UserID not in (select UserID from team where ProjectID = ?)', [$getselectedproj]);
 
-		return view('manageproject',array('projects'=>$projects,'show_projects'=>$show_projects, 'employees'=>$employees, 'addemployees'=>$addemployees));
+		  return view('manageproject',array('projects'=>$projects,'show_projects'=>$show_projects,'employees'=>$employees, 'addemployees'=>$addemployees));
   	}
 
   	/*public function addemployee(Request $request)

@@ -18,6 +18,8 @@
                   <thead>
                       <th>Project ID</th>
                       <th>Project Title</th>
+                      <th>Supervisor ID</th>
+                      <th>Supervisor Name</th>
                       <th>Budget</th>
                       <th>Customer Name</th>
                       <th>Edit</th>
@@ -28,6 +30,8 @@
                       <tr>
                           <td>{{ $project->ProjectID }}</td>
                           <td>{{ $project->ProjectTitle }}</td>
+                          <td>{{ $project->SupervisorID}}</td>
+                          <td>{{ $project->SupervisorName}}</td>
                           <td>{{ $project->Budget }}</td>
                           <td>{{ $project->CustomerName}}</td>
                           <td>
@@ -72,6 +76,29 @@
                               <div class="col-sm-9">
                                   <input type="text" class="form-control" id="inputTitle" name='inputTitle' placeholder="Enter Project Title"/>
                               </div>
+                          </div>
+                          <div class="form-group row">
+                            <label for="inputTitle" class="col-sm-3">Select Supervisor</label>
+                            <div class="col-sm-9">
+                              <select class="form-control" id="SupervisorSelection" name="SupervisorSelection">
+                                <option value="0">Please Select</option>
+                                @foreach ($supervisorlist as $supervisorlist)
+                                <option value="{{ $supervisorlist->UserID}}">{{$supervisorlist->UserID}} - {{$supervisorlist->FullName}} 
+                                </option>
+                                @endforeach
+                              </select>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label for="inputTitle" class="col-sm-3">Select Employee</label>
+                            <div class="col-sm-9">
+                              <select multiple class="form-control" id="EmployeeSelection" name="EmployeeSelection[]">
+                                @foreach ($employeelist as $employeelist)
+                                <option value="{{ $employeelist->UserID}}">{{$employeelist->UserID}} - {{$employeelist->FullName}} 
+                                </option>
+                                @endforeach
+                              </select>
+                            </div>
                           </div>
                           <div class="form-group row">
                               <label for="inputBudget" class="col-sm-3">Budget</label>

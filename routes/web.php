@@ -18,15 +18,14 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('maintain/employee','MaintainEmployeeController@index');
-
 Route::post('maintain/employee','MaintainEmployeeController@insert');
+Route::get('maintain/employee/{UserID}','MaintainEmployeeController@show');
+Route::post('maintain/employee/{UserID}','MaintainEmployeeController@updateEmployee');
 
 Route::get('maintain/project','MaintainProjectController@index');
-
 Route::post('maintain/project','MaintainProjectController@insert');
 
 Route::get('manage/project','ManageProjectController@index');
-
 Route::get('manage/project/showdetails','ManageProjectController@showprojectdetails');
 
 //Route::post('manage/project','ManageProjectController@showprojectdetails');

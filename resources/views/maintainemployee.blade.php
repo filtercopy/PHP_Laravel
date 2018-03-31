@@ -36,8 +36,9 @@
                             <td>${{ $employee->Salary}}</td>                         
                             <td>
                                 <p data-placement="top" data-toggle="tooltip" title="Edit">
-                                <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#updateEmpModal" >
-                                <span class="glyphicon glyphicon-edit"></span></button></p>
+                                <a href = '/maintain/employee/<?php echo $employee->UserID?>'><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" 
+                                    data-target="#updateEmpModal" >
+                                <span class="glyphicon glyphicon-edit"></span></button></a></p>
                             </td>
                             <td>
                                 <p data-placement="top" data-toggle="tooltip" title="Delete">
@@ -139,7 +140,7 @@
     <div class="modal fade" id="updateEmpModal" role="dialog" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-md">
           <!-- Modal content-->
-          <form role="form" action = "/maintain/employee" method = "post">
+            <form action = "/maintain/employee/<?php echo $employees_update->UserID; ?>" method = "post">
             <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
             <div class="modal-content">
                 <div class="modal-header">
@@ -152,37 +153,37 @@
                             <div class="form-group row">
                                 <label for="inputUserID" class="col-sm-3">Employee ID</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="inputUserID" name='inputUserID' placeholder="Enter Employee ID"/>
+                                    <input type="text" class="form-control" id="inputUserID" name='inputUserID' placeholder="Enter Employee ID" value = '<?php echo $employees_update->UserID; ?>'/>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputFullName" class="col-sm-3">Full Name</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="inputFullName" name='inputFullName' placeholder="Enter Full Name"/>
+                                    <input type="text" class="form-control" id="inputFullName" name='inputFullName' placeholder="Enter Full Name" value = '<?php echo $employees_update->FullName; ?>'/>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputAddress" class="col-sm-3">Address</label>
                                 <div class="col-sm-9">
-                                    <textarea class="form-control" id="inputAddress" name='inputAddress' placeholder="Enter Address"></textarea>
+                                    <textarea class="form-control" id="inputAddress" name='inputAddress' placeholder="Enter Address" value = '<?php echo $employees_update->Address; ?>'></textarea>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputEmail" class="col-sm-3">Email</label>
                                 <div class="col-sm-9">
-                                    <input type="email" class="form-control" id="inputEmail" name='inputEmail' placeholder="Enter Email"/>
+                                    <input type="email" class="form-control" id="inputEmail" name='inputEmail' placeholder="Enter Email" value = '<?php echo $employees_update->EmailID; ?>'/>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputJobTitle" class="col-sm-3">Job Title</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="inputJobTitle" name='inputJobTitle' placeholder="Enter Job Title"/>
+                                    <input type="text" class="form-control" id="inputJobTitle" name='inputJobTitle' placeholder="Enter Job Title" value = '<?php echo $employees_update->JobTitle; ?>'/>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputSalary" class="col-sm-3">Salary</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="inputSalary" name='inputSalary' placeholder="Enter Salary"/>
+                                    <input type="text" class="form-control" id="inputSalary" name='inputSalary' placeholder="Enter Salary" value = '<?php echo $employees_update->Salary; ?>'/>
                                 </div>
                             </div>
                         <!--/form-->
