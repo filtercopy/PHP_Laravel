@@ -29,15 +29,15 @@
 	    </div>
   	</div>
   	<div class="form-group row">
-		<label for="inputStartTime" class="col-lg-2 col-md-2 col-sm-4 col-xs-3 text-right">Start Time</label>
+		<label for="inputStartTime" class="col-lg-2 col-md-2 col-sm-4 col-xs-3 text-right">Start Date</label>
 		<div class="col-lg-4 col-md-4 col-sm-5 col-xs-6">
-			<input type="time" class="form-control" id="inputStartTime" placeholder="Enter Start Time"/>
+			<input type="date" class="form-control" id="inputStartTime" placeholder="Enter Start Date"/>
 		</div>
     </div>
   	<div class="form-group row">
-		<label for="inputEndTime" class="col-lg-2 col-md-2 col-sm-4 col-xs-3 text-right">End Time</label>
+		<label for="inputEndTime" class="col-lg-2 col-md-2 col-sm-4 col-xs-3 text-right">End Date</label>
 		<div class="col-lg-4 col-md-4 col-sm-5 col-xs-6">
-			<input type="time" class="form-control" id="inputEndTime" placeholder="Enter End Time"/>
+			<input type="date" class="form-control" id="inputEndTime" placeholder="Enter End Date"/>
 		</div>
   	</div>
 

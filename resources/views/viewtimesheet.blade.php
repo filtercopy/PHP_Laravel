@@ -30,13 +30,13 @@
 		<div class="form-group row">
 			<label for="inputStartTime" class="col-md-2 col-xs-4 text-right">Start Time</label>
 			<div class="col-lg-4 col-md-4 col-sm-5 col-xs-6">
-				<input type="time" class="form-control" id="inputStartTime" placeholder="Enter Start Time"/>
+				<input type="time" class="form-control" step="900" id="inputStartTime" placeholder="Enter Start Time"/>
 			</div>
 		</div>
 		<div class="form-group row">
 			<label for="inputEndTime" class="col-md-2 col-xs-4 text-right">End Time</label>
 			<div class="col-lg-4 col-md-4 col-sm-5 col-xs-6">
-				<input type="time" class="form-control" id="inputEndTime" placeholder="Enter End Time"/>
+				<input type="time" class="form-control" step="900" id="inputEndTime" placeholder="Enter End Time"/>
 			</div>
 		</div>
 		<br>

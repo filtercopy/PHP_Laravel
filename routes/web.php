@@ -19,8 +19,8 @@ Auth::routes();
 
 Route::get('maintain/employee','MaintainEmployeeController@index');
 Route::post('maintain/employee','MaintainEmployeeController@insert');
-Route::get('maintain/employee/{UserID}','MaintainEmployeeController@show');
-Route::post('maintain/employee/{UserID}','MaintainEmployeeController@updateEmployee');
+Route::post('maintain/employee/update','MaintainEmployeeController@updateEmployee');
+Route::post('maintain/employee/delete','MaintainEmployeeController@removeEmployee');
 
 Route::get('maintain/project','MaintainProjectController@index');
 Route::post('maintain/project','MaintainProjectController@insert');

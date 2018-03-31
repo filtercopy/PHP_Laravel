@@ -80,5 +80,28 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+
+    <script type="text/javascript">
+        
+        //Maintain Employee - Load data in Modal on Edit Employee
+        $(document).on('click', '.edit-modal', function() {
+            $('#updateEmpModal').modal('show');
+
+            $('#updateEmpModal #inputUserID').val($(this).data('id'));
+            $('#updateEmpModal #inputFullName').val($(this).data('fullname'));
+            $('#updateEmpModal #inputAddress').val($(this).data('address'));
+            $('#updateEmpModal #inputEmail').val($(this).data('emailid'));
+            $('#updateEmpModal #inputJobTitle').val($(this).data('jobtitle'));
+            $('#updateEmpModal #inputSalary').val($(this).data('salary'));
+        });
+
+        $(document).on('click', '.delete-modal', function() {
+            $('#removeEmpModal').modal('show');
+
+            $('#removeEmpModal #removeEmp').text($(this).data('id') + " " + $(this).data('fullname'));
+            $('#removeEmpModal #InputRemoveEmp').val($(this).data('id'));
+
+        });
+    </script>
 </body>
 </html>
