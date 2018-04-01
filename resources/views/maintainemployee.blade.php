@@ -14,7 +14,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="table-responsive">
-                <table id="mytable" class="table table-bordred table-striped table-hover">
+                <table id="empTable" class="table table-bordred table-striped table-hover">
                     <thead>
                         <th>Employee ID</th>
                         <th>Full Name</th>
@@ -36,13 +36,15 @@
                             <td>${{ $employee->Salary}}</td>                         
                             <td>
                                 <p data-placement="top" data-toggle="tooltip" title="Edit">
-                                    <a href="#" class="edit-modal btn btn-primary btn-xs" data-id="{{$employee->UserID}}" data-fullname="{{ $employee->FullName }}" data-address="{{ $employee->Address }}" data-emailid="{{ $employee->EmailID }}" data-jobtitle="{{ $employee->JobTitle }}" data-salary="{{ $employee->Salary }}">
-                                    <span class="glyphicon glyphicon-edit"></span></a></p>
+                                    <button class="edit-modal btn btn-primary btn-xs" data-id="{{$employee->UserID}}" data-fullname="{{ $employee->FullName }}" data-address="{{ $employee->Address }}" data-emailid="{{ $employee->EmailID }}" data-jobtitle="{{ $employee->JobTitle }}" data-salary="{{ $employee->Salary }}">
+                                    <span class="glyphicon glyphicon-edit"></span></button>
+                                </p>
                             </td>
                             <td>
                                 <p data-placement="top" data-toggle="tooltip" title="Delete">
-                                <button class="delete-modal btn btn-danger btn-xs" data-title="Delete" data-id="{{ $employee->UserID }}" data-fullname="{{ $employee->FullName }}" >
-                                <span class="glyphicon glyphicon-remove"></span></button></p>
+                                    <button class="delete-modal btn btn-danger btn-xs" data-title="Delete" data-id="{{ $employee->UserID }}" data-fullname="{{ $employee->FullName }}" >
+                                    <span class="glyphicon glyphicon-remove"></span></button>
+                                </p>
                             </td>
                         </tr>
                         @endforeach
@@ -90,42 +92,34 @@
                       <h4 class="modal-title">Add New Employee</h4>
                     </div>
                     <div class="modal-body">
-                        <div class="">
-                            <div class="form-group row">
-                                <label for="inputUserID" class="col-sm-3">Employee ID</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="inputUserID" name='inputUserID' placeholder="Enter Employee ID"/>
-                                </div>
+                        <div class="form-group row">
+                            <label for="inputFullName" class="col-sm-3">Full Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="inputFullName" name='inputFullName' placeholder="Enter Full Name"/>
                             </div>
-                            <div class="form-group row">
-                                <label for="inputFullName" class="col-sm-3">Full Name</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="inputFullName" name='inputFullName' placeholder="Enter Full Name"/>
-                                </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputAddress" class="col-sm-3">Address</label>
+                            <div class="col-sm-9">
+                                <textarea class="form-control" id="inputAddress" name='inputAddress' placeholder="Enter Address"></textarea>
                             </div>
-                            <div class="form-group row">
-                                <label for="inputAddress" class="col-sm-3">Address</label>
-                                <div class="col-sm-9">
-                                    <textarea class="form-control" id="inputAddress" name='inputAddress' placeholder="Enter Address"></textarea>
-                                </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputEmail" class="col-sm-3">Email</label>
+                            <div class="col-sm-9">
+                                <input type="email" class="form-control" id="inputEmail" name='inputEmail' placeholder="Enter Email"/>
                             </div>
-                            <div class="form-group row">
-                                <label for="inputEmail" class="col-sm-3">Email</label>
-                                <div class="col-sm-9">
-                                    <input type="email" class="form-control" id="inputEmail" name='inputEmail' placeholder="Enter Email"/>
-                                </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputJobTitle" class="col-sm-3">Job Title</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="inputJobTitle" name='inputJobTitle' placeholder="Enter Job Title"/>
                             </div>
-                            <div class="form-group row">
-                                <label for="inputJobTitle" class="col-sm-3">Job Title</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="inputJobTitle" name='inputJobTitle' placeholder="Enter Job Title"/>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="inputSalary" class="col-sm-3">Salary</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="inputSalary" name='inputSalary' placeholder="Enter Salary"/>
-                                </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputSalary" class="col-sm-3">Salary</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="inputSalary" name='inputSalary' placeholder="Enter Salary"/>
                             </div>
                         </div>
                     </div>
@@ -150,43 +144,41 @@
                       <h4 class="modal-title">Update Employee</h4>
                     </div>
                     <div class="modal-body">
-                        <div class="">
-                                <div class="form-group row">
-                                    <label for="inputUserID" class="col-sm-3">Employee ID</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="inputUserID" name='inputUserID' placeholder="Enter Employee ID" readonly />
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="inputFullName" class="col-sm-3">Full Name</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="inputFullName" name='inputFullName' placeholder="Enter Full Name" />
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="inputAddress" class="col-sm-3">Address</label>
-                                    <div class="col-sm-9">
-                                        <textarea class="form-control" id="inputAddress" name='inputAddress' placeholder="Enter Address" value = ""></textarea>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="inputEmail" class="col-sm-3">Email</label>
-                                    <div class="col-sm-9">
-                                        <input type="email" class="form-control" id="inputEmail" name='inputEmail' placeholder="Enter Email" value = ""/>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="inputJobTitle" class="col-sm-3">Job Title</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="inputJobTitle" name='inputJobTitle' placeholder="Enter Job Title" value = ""/>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="inputSalary" class="col-sm-3">Salary</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="inputSalary" name='inputSalary' placeholder="Enter Salary" value = ""/>
-                                    </div>
-                                </div>
+                        <div class="form-group row">
+                            <label for="inputUserID" class="col-sm-3">Employee ID</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="inputUserID" name='inputUserID' placeholder="Enter Employee ID" readonly />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputFullName" class="col-sm-3">Full Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="inputFullName" name='inputFullName' placeholder="Enter Full Name" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputAddress" class="col-sm-3">Address</label>
+                            <div class="col-sm-9">
+                                <textarea class="form-control" id="inputAddress" name='inputAddress' placeholder="Enter Address" value = ""></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputEmail" class="col-sm-3">Email</label>
+                            <div class="col-sm-9">
+                                <input type="email" class="form-control" id="inputEmail" name='inputEmail' placeholder="Enter Email" value = ""/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputJobTitle" class="col-sm-3">Job Title</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="inputJobTitle" name='inputJobTitle' placeholder="Enter Job Title" value = ""/>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputSalary" class="col-sm-3">Salary</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="inputSalary" name='inputSalary' placeholder="Enter Salary" value = ""/>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">

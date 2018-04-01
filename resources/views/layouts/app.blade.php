@@ -12,9 +12,10 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/common.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div id="app">
+    <div class="main-body">
         <nav class="navbar navbar-inverse navbar-static-top">
             <div class="container">
                 <div class="navbar-header">
@@ -82,9 +83,22 @@
     <script src="{{ asset('js/app.js') }}"></script>
 
     <script type="text/javascript">
+        /*$(document).ready(function(){
+            $('#prjTable [data-toggle="popover"]').popover({
+                trigger: 'focus',
+                placement : 'top',
+                html : true,
+                content: function() {
+                    if($(this).next().html()) {
+                        return $(this).next().html();
+                    }
+                    return "No Employee Found";
+                }
+            });
+        });*/
         
         //Maintain Employee - Load data in Modal on Edit Employee
-        $(document).on('click', '.edit-modal', function() {
+        $(document).on('click', '#empTable .edit-modal', function() {
             $('#updateEmpModal').modal('show');
 
             $('#updateEmpModal #inputUserID').val($(this).data('id'));
@@ -95,11 +109,35 @@
             $('#updateEmpModal #inputSalary').val($(this).data('salary'));
         });
 
-        $(document).on('click', '.delete-modal', function() {
+        $(document).on('click', '#empTable .delete-modal', function() {
             $('#removeEmpModal').modal('show');
 
             $('#removeEmpModal #removeEmp').text($(this).data('id') + " " + $(this).data('fullname'));
             $('#removeEmpModal #InputRemoveEmp').val($(this).data('id'));
+
+        });
+
+        //Maintain Project - Load data in Modal on Edit Project
+        $(document).on('click', '#prjTable .edit-modal', function() {
+            var supervisorID = $(this).data('supervisor') != "None" ? $(this).data('supervisor') : 0;
+            $('#updatePrjModal').modal('show');
+
+            $('#updatePrjModal #inputProjectID').val($(this).data('id'));
+            $('#updatePrjModal #inputTitle').val($(this).data('projecttitle'));
+            $('#updatePrjModal #SupervisorSelection').val(supervisorID);
+            $('#updatePrjModal #inputBudget').val($(this).data('budget'));
+            $('#updatePrjModal #inputCustomerName').val($(this).data('customer'));
+            if($(this).data('empids')) {
+                var data = $(this).data('empids').toString().split(',');
+                $('#updatePrjModal #EmployeeSelection').val(data);
+            }
+        });
+
+        $(document).on('click', '#prjTable .delete-modal', function() {
+            $('#removePrjModal').modal('show');
+
+            $('#removePrjModal #removePrj').text($(this).data('id') + " " + $(this).data('projecttitle'));
+            $('#removePrjModal #InputRemovePrj').val($(this).data('id'));
 
         });
     </script>

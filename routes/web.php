@@ -24,6 +24,8 @@ Route::post('maintain/employee/delete','MaintainEmployeeController@removeEmploye
 
 Route::get('maintain/project','MaintainProjectController@index');
 Route::post('maintain/project','MaintainProjectController@insert');
+Route::post('maintain/project/update','MaintainProjectController@updateProject');
+Route::post('maintain/project/delete','MaintainProjectController@removeProject');
 
 Route::get('manage/project','ManageProjectController@index');
 Route::get('manage/project/showdetails','ManageProjectController@showprojectdetails');

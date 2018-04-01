@@ -28,16 +28,16 @@ class MaintainEmployeeController extends Controller
 	 */
    	public function insert(Request $request)
     {
-	    $UserID = $request->input('inputUserID');
-	    $Password = $request->input('inputUserID');
+	    $Password = $request->input('inputEmail');	//Default Temporary Password same as Email ID
 	    $FullName = $request->input('inputFullName');
 	    $Address = $request->input('inputAddress');
 	    $EmailID = $request->input('inputEmail');
 	    $JobTitle = $request->input('inputJobTitle');
 	    $Salary = $request->input('inputSalary');
 
-	    DB::insert('insert into employee (UserID, Password, FullName, Address, EmailID, JobTitle, Salary) values(?, ?, ?, ?, ?, ?, ?)',	[$UserID, $Password, $FullName, $Address, $EmailID, $JobTitle, $Salary]);
-
+	    $UserID = DB::table('employee')->insertGetId(
+		    ['Password' => $Password, 'FullName' => $FullName, 'Address' => $Address, 'EmailID' => $EmailID, 'JobTitle' => $JobTitle, 'Salary' => $Salary]
+		);
 	    return $this->index();
 	}
 
@@ -65,11 +65,10 @@ class MaintainEmployeeController extends Controller
 	public function removeEmployee(Request $request) 
 	{
 		$employeeId = $request->input('InputRemoveEmp');
-		$NullValue = [];
 		//Remove from Team Table (FOREIGN KEY)
 		Team::where('UserID', $employeeId)
            ->delete();
-        //Remove from Team Table (FOREIGN KEY)
+        //Remove from Timesheet Table (FOREIGN KEY)
 		Timesheet::where('UserID', $employeeId)
             ->delete();
         //Remove from Project Table

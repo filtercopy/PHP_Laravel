@@ -1,0 +1,12 @@
+.main-body .navbar-inverse .navbar-nav>.active>a {
+	background-color: #4CAF43;
+    border-color: #259d6d;
+}
+
+.main-body .navbar-static-top {
+	border: 0;
+}
+
+.main-body .btn-primary, .main-body .btn-primary.focus, .main-body .btn-primary:focus {
+	background-color: #4CAF43;
+}

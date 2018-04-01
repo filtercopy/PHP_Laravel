@@ -6,28 +6,42 @@ use Illuminate\Http\Request;
 use DB;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Timesheet;
+use App\Team;
+use App\Project;
 
 class MaintainProjectController extends Controller
 {
+	/*
+	 * Show List of Project in the system
+	 */
     public function index()
     {
      	$supervisorlist = DB::select('select UserID, FullName from employee where JobTitle = "Supervisor" ');
      	$employeelist = DB::select('select UserID, FullName from employee where JobTitle != "Supervisor" ');
     	$projects = DB::select('(select p.ProjectID, p.ProjectTitle, p.SupervisorID, e.Fullname as SupervisorName, p.Budget, p.CustomerName from Project p inner join employee e on p.SupervisorID = e.UserID)
     		UNION (select ProjectID, ProjectTitle, "None" as SupervisorID , "None" as SupervisorName, Budget, CustomerName from Project where SupervisorID = 0)');
+    	$employeeProjectList = DB::select('select e.UserID, e.FullName, t.ProjectID from employee e inner join team t on e.UserID = t.UserID where e.JobTitle != "Supervisor" ');
 
-     	return view('maintainproject',['projects'=>$projects, 'supervisorlist'=>$supervisorlist, 'employeelist'=>$employeelist]);
+    	$supervisorlistUpdate = $supervisorlist;	//Need seperate variable for Update Modal loops
+    	$employeelistUpdate = $employeelist;	//Conflicts with Add Modal loops
+
+     	return view('maintainproject',['projects'=>$projects, 'supervisorlist'=>$supervisorlist, 'employeelist'=>$employeelist, 'employeeProjectList'=> $employeeProjectList, 'supervisorlistUpdate'=>$supervisorlistUpdate, 'employeelistUpdate'=>$employeelistUpdate]);
   	}
 
+	/*
+	 * Insert New Project in the system
+	 */
    	public function insert(Request $request)
     {
-	    $ProjectID = $request->input('inputProjectID');
 	    $ProjectTitle = $request->input('inputTitle');
 	    $SupervisorID = $request->input('SupervisorSelection');
 		$Budget = $request->input('inputBudget');
 	    $CustomerName = $request->input('inputCustomerName');
 	    
-	    DB::insert('insert into project (ProjectID, ProjectTitle, Budget, CustomerName, SupervisorID) values(?, ?, ?, ?, ?)', [$ProjectID, $ProjectTitle, $Budget, $CustomerName, $SupervisorID]);
+	    $ProjectID = DB::table('project')->insertGetId(
+		    ['ProjectTitle' => $ProjectTitle, 'Budget' => $Budget, 'CustomerName' => $CustomerName, 'SupervisorID' => $SupervisorID]
+		);
 
 	    if(!empty($_POST['EmployeeSelection']))
 		{
@@ -37,5 +51,51 @@ class MaintainProjectController extends Controller
 	    	}
 	    }
 	    return $this->index();
+	}
+
+	/*
+	 * Update Existing Project in the system
+	 */
+	public function updateProject(Request $request) 
+	{
+		$ProjectID = $request->input('inputProjectID');
+	    $ProjectTitle = $request->input('inputTitle');
+	    $SupervisorID = $request->input('SupervisorSelection');
+		$Budget = $request->input('inputBudget');
+	    $CustomerName = $request->input('inputCustomerName');
+
+		Project::where('ProjectID', $ProjectID)
+            ->update(['ProjectTitle' => $ProjectTitle, 'SupervisorID' => $SupervisorID, 'Budget' => $Budget, 'CustomerName' => $CustomerName]);
+		
+		Team::where('ProjectID', $ProjectID)
+           ->delete();
+
+        if(!empty($_POST['EmployeeSelection']))
+		{
+			foreach ($_POST['EmployeeSelection'] as $Selected)
+			{
+					DB::insert('insert into team (UserID, ProjectID) values(?, ?)', [$Selected, $ProjectID]);
+	    	}
+	    }
+	    return redirect('/maintain/project');
+	}
+
+	/*
+	 * Remove Existing Project from the system
+	 */
+	public function removeProject(Request $request) 
+	{
+		$ProjectID = $request->input('InputRemovePrj');
+		//Remove from Team Table (FOREIGN KEY)
+		Team::where('ProjectID', $ProjectID)
+           ->delete();
+        //Remove from Timesheet Table (FOREIGN KEY)
+		Timesheet::where('ProjectID', $ProjectID)
+            ->delete();
+        //Remove from Project Table
+        Project::where('ProjectID',$ProjectID)
+        	->delete();
+
+		return redirect('/maintain/project');
 	}
 }
