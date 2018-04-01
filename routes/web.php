@@ -38,6 +38,5 @@ Route::get('/manage/generatesummary', function () {
     return view('generatesummary');
 });
 
-Route::get('/employee/viewtimesheet', function () {
-    return view('viewtimesheet');
-});
+Route::get('employee/viewtimesheet', 'ViewTimeSheetController@index');
+Route::post('employee/viewtimesheet', 'ViewTimeSheetController@insert');
