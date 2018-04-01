@@ -13,7 +13,8 @@ class MaintainProjectController extends Controller
     {
      	$supervisorlist = DB::select('select UserID, FullName from employee where JobTitle = "Supervisor" ');
      	$employeelist = DB::select('select UserID, FullName from employee where JobTitle != "Supervisor" ');
-    	$projects = DB::select('select p.ProjectID, p.ProjectTitle, p.SupervisorID, e.Fullname as SupervisorName, p.Budget, p.CustomerName from Project p inner join employee e on p.SupervisorID = e.UserID');
+    	$projects = DB::select('(select p.ProjectID, p.ProjectTitle, p.SupervisorID, e.Fullname as SupervisorName, p.Budget, p.CustomerName from Project p inner join employee e on p.SupervisorID = e.UserID)
+    		UNION (select ProjectID, ProjectTitle, "None" as SupervisorID , "None" as SupervisorName, Budget, CustomerName from Project where SupervisorID = 0)');
 
      	return view('maintainproject',['projects'=>$projects, 'supervisorlist'=>$supervisorlist, 'employeelist'=>$employeelist]);
   	}

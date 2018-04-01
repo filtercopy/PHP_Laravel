@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\employee;
 use App\Timesheet;
 use App\Team;
+use App\Project;
 use Response;
 
 class MaintainEmployeeController extends Controller
@@ -64,12 +65,16 @@ class MaintainEmployeeController extends Controller
 	public function removeEmployee(Request $request) 
 	{
 		$employeeId = $request->input('InputRemoveEmp');
+		$NullValue = [];
 		//Remove from Team Table (FOREIGN KEY)
 		Team::where('UserID', $employeeId)
-            ->delete();
+           ->delete();
         //Remove from Team Table (FOREIGN KEY)
 		Timesheet::where('UserID', $employeeId)
             ->delete();
+        //Remove from Project Table
+        Project::where('SuperVisorID',$employeeId)
+        	->update(array('SuperVisorID'=>'0'));
         //Remove from Employee Table
         Employee::where('UserID', $employeeId)
         	->delete();
