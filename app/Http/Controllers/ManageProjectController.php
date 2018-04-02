@@ -14,11 +14,8 @@ class ManageProjectController extends Controller
     public function index()
     {
      	$projects = project::all();
-     	$show_projects = []; 
-     	$employees = [];
-     	$addemployees = [];
 
-     	return view('manageproject',array('projects'=>$projects,'show_projects'=>$show_projects, 'employees'=>$employees, 'addemployees'=>$addemployees));
+     	return view('manageproject',array('projects'=>$projects,'getselectedproj'=>0,'show_projects'=>[], 'employees'=>[], 'addemployees'=>[]));
   	}
 
   	public function showprojectdetails(Request $request)
@@ -31,15 +28,15 @@ class ManageProjectController extends Controller
 
     	$addemployees = DB::select('select UserID, FullName, Address, EmailID, JobTitle from employee where JobTitle != "Supervisor"  and UserID not in (select UserID from team where ProjectID = ?)', [$getselectedproj]);
 
-		  return view('manageproject',array('projects'=>$projects,'show_projects'=>$show_projects,'employees'=>$employees, 'addemployees'=>$addemployees));
+		  return view('manageproject',array('projects'=>$projects,'getselectedproj'=>$getselectedproj,'show_projects'=>$show_projects,'employees'=>$employees, 'addemployees'=>$addemployees));
   	}
 
-  	/*public function addemployee(Request $request)
+  	public function addemployee(Request $request)
     {	
     	dd('I AM HERE');
     	$getselectedemp = Input::get('empSelection');
     	dd($getselectedemp);
 
     	return $this->showprojectdetails();
-  	}*/
+  	}
 }

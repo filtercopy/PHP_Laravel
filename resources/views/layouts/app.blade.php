@@ -30,7 +30,7 @@
 
                     <!-- Branding Image -->
                     <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
+                        <b><span style="color:#fff;font-size: 28px;">{{ config('app.name', 'Laravel') }}</span></b>
                     </a>
                 </div>
 
@@ -39,7 +39,7 @@
                     <ul class="nav navbar-nav">
                         <li class="{{ Request::is('maintain/employee') ? 'active' : '' }}"><a href="{{ url('maintain/employee') }}">Maintain Employee</a></li>
                         <li class="{{ Request::is('maintain/project') ? 'active' : '' }}"><a href="{{ url('maintain/project') }}">Maintain Project</a></li>
-                        <li class="{{ Request::is('manage/project') ? 'active' : '' }}"><a href="{{ url('manage/project') }}">Manage Project</a></li>
+                        <li class="{{ Request::is('manage/project') || Request::is('manage/project/*') ? 'active' : '' }}"><a href="{{ url('manage/project') }}">Manage Project</a></li>
                         <li class="{{ Request::is('manage/generatesummary') ? 'active' : '' }}"><a href="{{ url('manage/generatesummary') }}">Generate Summary</a></li>
                         <li class="{{ Request::is('employee/viewtimesheet') ? 'active' : '' }}"><a href="{{ url('employee/viewtimesheet') }}">View Timesheet</a></li>
                     </ul>
@@ -48,8 +48,22 @@
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
                         @guest
-                            <li><a href="{{ route('login') }}">Login</a></li>
-                            <li><a href="{{ route('register') }}">Register</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <span class="glyphicon glyphicon-user"></span> 
+                                    <strong>Annie Leblanc</strong>
+                                    <span class="glyphicon glyphicon-chevron-down"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <div class="navbar-login">
+                                            <p class="text-center"><strong>Logout</strong></p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!-- <li><a href="{{ route('login') }}">Login</a></li>
+                            <li><a href="{{ route('register') }}">Register</a></li> -->
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">

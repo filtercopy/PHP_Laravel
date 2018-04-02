@@ -32,7 +32,7 @@ Route::get('manage/project/showdetails','ManageProjectController@showprojectdeta
 
 //Route::post('manage/project','ManageProjectController@showprojectdetails');
 
-//Route::post('manage/project/addemployee','ManageProjectController@addemployee');
+Route::get('manage/project/addemployee','ManageProjectController@addemployee');
 
 Route::get('/manage/generatesummary', function () {
     return view('generatesummary');
