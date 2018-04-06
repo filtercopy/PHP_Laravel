@@ -36,46 +36,35 @@
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
+                    @guest
+                    @else
                     <ul class="nav navbar-nav">
-                        <li class="{{ Request::is('maintain/employee') ? 'active' : '' }}"><a href="{{ url('maintain/employee') }}">Maintain Employee</a></li>
-                        <li class="{{ Request::is('maintain/project') ? 'active' : '' }}"><a href="{{ url('maintain/project') }}">Maintain Project</a></li>
-                        <li class="{{ Request::is('manage/project') || Request::is('manage/project/*') ? 'active' : '' }}"><a href="{{ url('manage/project') }}">Manage Project</a></li>
-                        <li class="{{ Request::is('manage/generatesummary') ? 'active' : '' }}"><a href="{{ url('manage/generatesummary') }}">Generate Summary</a></li>
+                        <li class="{{ Auth::user()->Role == 1 ? '' : 'hidden' }} {{ Request::is('maintain/employee') ? 'active' : '' }}"><a href="{{ url('maintain/employee') }}">Maintain Employee</a></li>
+                        <li class="{{ Auth::user()->Role == 1 ? '' : 'hidden' }} {{ Request::is('maintain/project') ? 'active' : '' }}"><a href="{{ url('maintain/project') }}">Maintain Project</a></li>
+                        <li class="{{ Auth::user()->Role != 3 ? '' : 'hidden' }} {{ Request::is('manage/project') || Request::is('manage/project/*') ? 'active' : '' }}"><a href="{{ url('manage/project') }}">Manage Project</a></li>
+                        <li class="{{ Auth::user()->Role != 3 ? '' : 'hidden' }} {{ Request::is('manage/generatesummary') ? 'active' : '' }}"><a href="{{ url('manage/generatesummary') }}">Generate Summary</a></li>
                         <li class="{{ Request::is('employee/viewtimesheet') ? 'active' : '' }}"><a href="{{ url('employee/viewtimesheet') }}">View Timesheet</a></li>
                     </ul>
-
+                    @endguest
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
                         @guest
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <span class="glyphicon glyphicon-user"></span> 
-                                    <strong>Annie Leblanc</strong>
-                                    <span class="glyphicon glyphicon-chevron-down"></span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <div class="navbar-login">
-                                            <p class="text-center"><strong>Logout</strong></p>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </li>
-                            <!-- <li><a href="{{ route('login') }}">Login</a></li>
-                            <li><a href="{{ route('register') }}">Register</a></li> -->
+                            <li><a href="{{ route('login') }}">Login</a></li>
+                            <!-- <li><a href="{{ route('register') }}">Register</a></li> -->
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
-                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                    {{ Auth::user()->FullName }} <span class="caret"></span>
                                 </a>
 
                                 <ul class="dropdown-menu">
+                                    <li><a>{{ Auth::user()->JobTitle }}</a></li>
                                     <li>
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                            Logout
+                                            <span class="text-primary">Logout</span>
                                         </a>
 
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -152,6 +141,14 @@
 
             $('#removePrjModal #removePrj').text($(this).data('id') + " " + $(this).data('projecttitle'));
             $('#removePrjModal #InputRemovePrj').val($(this).data('id'));
+
+        });
+
+        $(document).on('click', '#managePrjtable .delete-modal', function() {
+            $('#removePrjEmpModal').modal('show');
+
+            $('#removePrjEmpModal #removePrjEmp').text($(this).data('id') + " " + $(this).data('fullname'));
+            $('#removePrjEmpModal #InputRemovePrjEmp').val($(this).data('id'));
 
         });
     </script>

@@ -11,6 +11,7 @@ use App\Timesheet;
 use App\Team;
 use App\Project;
 use Response;
+use Illuminate\Support\Facades\Hash;
 
 class MaintainEmployeeController extends Controller
 {
@@ -28,7 +29,7 @@ class MaintainEmployeeController extends Controller
 	 */
    	public function insert(Request $request)
     {
-	    $Password = $request->input('inputEmail');	//Default Temporary Password same as Email ID
+	    $Password = Hash::make($request->input('inputEmail'));	//Default Temporary Password same as Email ID
 	    $FullName = $request->input('inputFullName');
 	    $Address = $request->input('inputAddress');
 	    $EmailID = $request->input('inputEmail');

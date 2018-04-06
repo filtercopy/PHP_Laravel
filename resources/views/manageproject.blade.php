@@ -16,7 +16,6 @@
         </select>
       </div>
       <button type="submit" class="btn btn-primary btn-md">Go</button>
-      <!--a href = '/manage/project/<?php echo $project->ProjectID?>' class="btn btn-primary btn-md" >Go</a-->
     </div>
   </form>
   <hr>
@@ -45,7 +44,7 @@
     <div class="row">
       <div class="col-md-12">
         <div class="table-responsive">
-          <table id="mytable" class="table table-bordred table-striped">
+          <table id="managePrjtable" class="table table-bordred table-striped">
             <thead>
               <th>Employee ID</th>
               <th>Full Name</th>
@@ -64,8 +63,9 @@
                 <td>{{ $employee->JobTitle}}</td> 
                 <td>
                   <p data-placement="top" data-toggle="tooltip" title="Delete">
-                  <button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" >
-                  <span class="glyphicon glyphicon-remove"></span></button></p>
+                    <button class="delete-modal btn btn-danger btn-xs" data-title="Delete" data-id="{{ $employee->UserID }}" data-fullname="{{ $employee->FullName }}" >
+                    <span class="glyphicon glyphicon-remove"></span></button>
+                  </p>
                 </td>
               </tr>
             @endforeach
@@ -81,6 +81,7 @@
       <!-- Modal content-->
       <form role="form" action = "/manage/project/addemployee" method = "post">
         <input type = "hidden" name = "_token" value = "{{ csrf_token() }}">
+        <input type = "hidden" name = "getselectedproj" value = "{{ $getselectedproj }}">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -90,7 +91,7 @@
             <div class="row">
               <div class="col-md-12">
                   <div class="table-responsive">
-                      <table id="mytable" class="table table-bordred table-striped table-hover" name="empSelection">
+                      <table id="mytable" class="table table-bordred table-striped table-hover">
                           <thead>
                               <th><input type="checkbox" id="checkall" /></th> 
                               <th>Employee ID</th>
@@ -99,11 +100,10 @@
                               <th>Email</th>
                               <th>Job Title</th>
                           </thead>
-                          <tbody>
+                          <tbody>                              
                               @foreach ($addemployees as $addemployee)
-                              <input type = "hidden" name = "_token" value = "{{ $addemployee->UserID }}">
                               <tr>
-                                  <td><input type="checkbox" /></td>
+                                  <td><input type="checkbox" name="addEmployeesList[]" value="{{ $addemployee->UserID }}" /></td>
                                   <td>{{ $addemployee->UserID }}</td>
                                   <td>{{ $addemployee->FullName }}</td>
                                   <td>{{ $addemployee->Address }}</td>
@@ -123,6 +123,32 @@
           </div>
         </div>
       </form>
+    </div>
+  </div>
+  <!--  Remove Project from the system  -->
+  <div class="modal fade" id="removePrjEmpModal" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+        <form role="form" action = "/manage/project/deleteemployee" method = "post">
+            <input type = "hidden" name = "_token" value = "{{ csrf_token() }}">
+            <input type = "hidden" id = "InputRemovePrjEmp" name = "InputRemovePrjEmp" value = "" />
+            <input type = "hidden" name = "getselectedproj" value = "{{ $getselectedproj }}">
+            <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Remove Project</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <p>Are you sure you want to remove <b><span id="removePrjEmp"></span></b> from the system? This process can not be undone.</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-danger">Remove</button>
+                </div>
+            </div>
+        </form>
     </div>
   </div>
 </div>

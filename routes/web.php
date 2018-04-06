@@ -14,6 +14,9 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/home', function () {
+    return view('home');
+});
 
 Auth::routes();
 
@@ -29,10 +32,8 @@ Route::post('maintain/project/delete','MaintainProjectController@removeProject')
 
 Route::get('manage/project','ManageProjectController@index');
 Route::get('manage/project/showdetails','ManageProjectController@showprojectdetails');
-
-//Route::post('manage/project','ManageProjectController@showprojectdetails');
-
-Route::get('manage/project/addemployee','ManageProjectController@addemployee');
+Route::post('manage/project/addemployee','ManageProjectController@addEmployee');
+Route::post('manage/project/deleteemployee','ManageProjectController@removeEmployee');
 
 Route::get('/manage/generatesummary', function () {
     return view('generatesummary');
