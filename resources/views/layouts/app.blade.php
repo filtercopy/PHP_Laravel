@@ -11,7 +11,12 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    
+    <link rel="stylesheet"
+        href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet"
+        href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
+    <!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> -->
     <link href="{{ asset('css/common.css') }}" rel="stylesheet">
 </head>
 <body>
@@ -43,7 +48,19 @@
                         <li class="{{ Auth::user()->Role == 1 ? '' : 'hidden' }} {{ Request::is('maintain/project') ? 'active' : '' }}"><a href="{{ url('maintain/project') }}">Maintain Project</a></li>
                         <li class="{{ Auth::user()->Role != 3 ? '' : 'hidden' }} {{ Request::is('manage/project') || Request::is('manage/project/*') ? 'active' : '' }}"><a href="{{ url('manage/project') }}">Manage Project</a></li>
                         <li class="{{ Auth::user()->Role != 3 ? '' : 'hidden' }} {{ Request::is('manage/generatesummary') ? 'active' : '' }}"><a href="{{ url('manage/generatesummary') }}">Generate Summary</a></li>
-                        <li class="{{ Request::is('employee/viewtimesheet') ? 'active' : '' }}"><a href="{{ url('employee/viewtimesheet') }}">View Timesheet</a></li>
+                        <li class="{{ Request::is('employee/viewtimesheet') ? 'active' : '' }} {{ Request::is('employee/viewemployeetimesheet') ? 'active' : '' }}">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
+                                    View Timesheet <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="{{ Request::is('employee/viewtimesheet') ? 'active' : '' }}">
+                                    <a href="{{ url('employee/viewtimesheet') }}">My Timesheet</a>
+                                </li>
+                                <li class="{{ Request::is('employee/viewemployeetimesheet') ? 'active' : '' }}">
+                                    <a href="{{ url('employee/viewemployeetimesheet') }}">Employee Timesheet</a>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
                     @endguest
                     <!-- Right Side Of Navbar -->
@@ -83,74 +100,11 @@
     </div>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
-
-    <script type="text/javascript">
-        /*$(document).ready(function(){
-            $('#prjTable [data-toggle="popover"]').popover({
-                trigger: 'focus',
-                placement : 'top',
-                html : true,
-                content: function() {
-                    if($(this).next().html()) {
-                        return $(this).next().html();
-                    }
-                    return "No Employee Found";
-                }
-            });
-        });*/
-        
-        //Maintain Employee - Load data in Modal on Edit Employee
-        $(document).on('click', '#empTable .edit-modal', function() {
-            $('#updateEmpModal').modal('show');
-
-            $('#updateEmpModal #inputUserID').val($(this).data('id'));
-            $('#updateEmpModal #inputFullName').val($(this).data('fullname'));
-            $('#updateEmpModal #inputAddress').val($(this).data('address'));
-            $('#updateEmpModal #inputEmail').val($(this).data('emailid'));
-            $('#updateEmpModal #inputJobTitle').val($(this).data('jobtitle'));
-            $('#updateEmpModal #inputSalary').val($(this).data('salary'));
-        });
-
-        $(document).on('click', '#empTable .delete-modal', function() {
-            $('#removeEmpModal').modal('show');
-
-            $('#removeEmpModal #removeEmp').text($(this).data('id') + " " + $(this).data('fullname'));
-            $('#removeEmpModal #InputRemoveEmp').val($(this).data('id'));
-
-        });
-
-        //Maintain Project - Load data in Modal on Edit Project
-        $(document).on('click', '#prjTable .edit-modal', function() {
-            var supervisorID = $(this).data('supervisor') != "None" ? $(this).data('supervisor') : 0;
-            $('#updatePrjModal').modal('show');
-
-            $('#updatePrjModal #inputProjectID').val($(this).data('id'));
-            $('#updatePrjModal #inputTitle').val($(this).data('projecttitle'));
-            $('#updatePrjModal #SupervisorSelection').val(supervisorID);
-            $('#updatePrjModal #inputBudget').val($(this).data('budget'));
-            $('#updatePrjModal #inputCustomerName').val($(this).data('customer'));
-            if($(this).data('empids')) {
-                var data = $(this).data('empids').toString().split(',');
-                $('#updatePrjModal #EmployeeSelection').val(data);
-            }
-        });
-
-        $(document).on('click', '#prjTable .delete-modal', function() {
-            $('#removePrjModal').modal('show');
-
-            $('#removePrjModal #removePrj').text($(this).data('id') + " " + $(this).data('projecttitle'));
-            $('#removePrjModal #InputRemovePrj').val($(this).data('id'));
-
-        });
-
-        $(document).on('click', '#managePrjtable .delete-modal', function() {
-            $('#removePrjEmpModal').modal('show');
-
-            $('#removePrjEmpModal #removePrjEmp').text($(this).data('id') + " " + $(this).data('fullname'));
-            $('#removePrjEmpModal #InputRemovePrjEmp').val($(this).data('id'));
-
-        });
-    </script>
+    <!-- <script src="{{ asset('js/app.js') }}"></script> -->
+    <script src="//code.jquery.com/jquery-1.12.3.js"></script>
+    <script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="{{ asset('js/common.js') }}"></script>
 </body>
 </html>

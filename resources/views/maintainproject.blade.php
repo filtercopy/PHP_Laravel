@@ -23,17 +23,17 @@
                       <th>Budget</th>
                       <th>Customer Name</th>
                       <th>Employees</th>
-                      <th>Edit</th>
-                      <th>Delete</th>
+                      <th class="sorting-disabled">Edit</th>
+                      <th class="sorting-disabled">Delete</th>
                   </thead>
                   <tbody>
                       @foreach ($projects as $project)
                       <tr>
                           <td>{{ $project->ProjectID }}</td>
                           <td>{{ $project->ProjectTitle }}</td>
-                          <td>{{ $project->SupervisorID}}</td>
-                          <td>{{ $project->SupervisorName}}</td>
-                          <td>{{ $project->Budget }}</td>
+                          <td>{{ $project->SupervisorID or "Not Assigned"}}</td>
+                          <td>{{ $project->SupervisorName or "Not Assigned"}}</td>
+                          <td>${{ $project->Budget }}</td>
                           <td>{{ $project->CustomerName}}</td>
                           <td>
                             <!-- <button type="button" class="btn btn-primary btn-xs" data-container="body" data-toggle="popover" data-placement="top" data-popover-content=".popover-body">
@@ -85,13 +85,13 @@
               </div>
               <div class="modal-body">
                 <div class="form-group row">
-                    <label for="inputTitle" class="col-sm-3">Project Title</label>
+                    <label for="inputTitle" class="col-sm-3 text-right">Project Title</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="inputTitle" name='inputTitle' placeholder="Enter Project Title"/>
+                        <input type="text" class="form-control" id="inputTitle" name='inputTitle' placeholder="Enter Project Title" required />
                     </div>
                 </div>
                 <div class="form-group row">
-                  <label for="inputTitle" class="col-sm-3">Select Supervisor</label>
+                  <label for="inputTitle" class="col-sm-3 text-right">Select Supervisor</label>
                   <div class="col-sm-9">
                     <select class="form-control" id="SupervisorSelection" name="SupervisorSelection">
                       <option value="0">Please Select</option>
@@ -103,7 +103,7 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="inputTitle" class="col-sm-3">Select Employee</label>
+                  <label for="inputTitle" class="col-sm-3 text-right">Select Employee</label>
                   <div class="col-sm-9">
                     <select multiple class="form-control" id="EmployeeSelection" name="EmployeeSelection[]">
                       @foreach ($employeelist as $employeelist)
@@ -114,15 +114,15 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                    <label for="inputBudget" class="col-sm-3">Budget</label>
+                    <label for="inputBudget" class="col-sm-3 text-right">Budget</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="inputBudget" name='inputBudget' placeholder="Enter Budget"/>
+                        <input type="number" class="form-control hide-input-spinner" id="inputBudget" name='inputBudget' placeholder="Enter Budget" min="0" required />
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="inputCustomerName" class="col-sm-3">Customer Name</label>
+                    <label for="inputCustomerName" class="col-sm-3 text-right">Customer Name</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="inputCustomerName" name='inputCustomerName' placeholder="Enter Customer Name"/>
+                        <input type="text" class="form-control" id="inputCustomerName" name='inputCustomerName' placeholder="Enter Customer Name" required />
                     </div>
                 </div>
               </div>
@@ -174,20 +174,20 @@
                   </div>
                   <div class="modal-body">
                     <div class="form-group row">
-                        <label for="inputProjectID" class="col-sm-3">Project ID</label>
+                        <label for="inputProjectID" class="col-sm-3 text-right">Project ID</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="inputProjectID" name='inputProjectID'
                             placeholder="Enter Project ID" readonly />
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputTitle" class="col-sm-3">Project Title</label>
+                        <label for="inputTitle" class="col-sm-3 text-right">Project Title</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="inputTitle" name='inputTitle' placeholder="Enter Project Title"/>
+                            <input type="text" class="form-control" id="inputTitle" name='inputTitle' placeholder="Enter Project Title" required />
                         </div>
                     </div>
                     <div class="form-group row">
-                      <label for="inputTitle" class="col-sm-3">Select Supervisor</label>
+                      <label for="inputTitle" class="col-sm-3 text-right">Select Supervisor</label>
                       <div class="col-sm-9">
                         <select class="form-control" id="SupervisorSelection" name="SupervisorSelection">
                           <option value="0">Please Select</option>
@@ -199,7 +199,7 @@
                       </div>
                     </div>
                     <div class="form-group row">
-                      <label for="inputTitle" class="col-sm-3">Select Employee</label>
+                      <label for="inputTitle" class="col-sm-3 text-right">Select Employee</label>
                       <div class="col-sm-9">
                         <select multiple class="form-control" id="EmployeeSelection" name="EmployeeSelection[]">
                           @foreach ($employeelistUpdate as $employeelist)
@@ -210,15 +210,15 @@
                       </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputBudget" class="col-sm-3">Budget</label>
+                        <label for="inputBudget" class="col-sm-3 text-right">Budget</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="inputBudget" name='inputBudget' placeholder="Enter Budget"/>
+                            <input type="number" class="form-control hide-input-spinner" id="inputBudget" name='inputBudget' placeholder="Enter Budget" min="0" required />
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputCustomerName" class="col-sm-3">Customer Name</label>
+                        <label for="inputCustomerName" class="col-sm-3 text-right">Customer Name</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="inputCustomerName" name='inputCustomerName' placeholder="Enter Customer Name"/>
+                            <input type="text" class="form-control" id="inputCustomerName" name='inputCustomerName' placeholder="Enter Customer Name" required />
                         </div>
                     </div>
                   </div>

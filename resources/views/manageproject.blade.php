@@ -93,7 +93,7 @@
                   <div class="table-responsive">
                       <table id="mytable" class="table table-bordred table-striped table-hover">
                           <thead>
-                              <th><input type="checkbox" id="checkall" /></th> 
+                              <th><!-- <input type="checkbox" id="checkall" /> --></th> 
                               <th>Employee ID</th>
                               <th>Full Name</th>
                               <th>Address</th>
