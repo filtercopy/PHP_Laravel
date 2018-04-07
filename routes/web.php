@@ -35,9 +35,8 @@ Route::get('manage/project/showdetails','ManageProjectController@showprojectdeta
 Route::post('manage/project/addemployee','ManageProjectController@addEmployee');
 Route::post('manage/project/deleteemployee','ManageProjectController@removeEmployee');
 
-Route::get('/manage/generatesummary', function () {
-    return view('generatesummary');
-});
+Route::get('manage/generatesummary','GenerateReportController@index');
+Route::get('generatereport','GenerateReportController@generatereport');
 
 Route::get('employee/viewtimesheet', 'ViewTimeSheetController@index');
 Route::post('employee/viewtimesheet', 'ViewTimeSheetController@insert');
