@@ -185,7 +185,7 @@ ALTER TABLE `team`
 -- Indexes for table `timesheet`
 --
 ALTER TABLE `timesheet`
-  ADD PRIMARY KEY (`UserID`,`ProjectID`),
+  ADD PRIMARY KEY (`UserID`,`ProjectID`, `Date`),
   ADD KEY `ProjectID` (`ProjectID`);
 
 --

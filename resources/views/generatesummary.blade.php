@@ -60,12 +60,13 @@
 	<br>
 	<div class="container" style="background-color: #e1f5fe63;">
 		<div class="row">
-			<h4><!--div class="col-lg-12">
-					<label>03/30/2018</label>
-				</div-->
+			<h4>
 				<div class="text-center">
-					<label>Project Title : Ipstack Maintaintence
-					</label>
+					@if (count($reports) <= 0)
+					<label>No result found</label>
+					@else
+					<label> {{ $reports[0]->ProjectTitle }}</label>
+					
 				</div>
 			</h4>
 		</div>
@@ -96,6 +97,7 @@
 							<td>{{ $report->HoursWorked }}</td>
 					    </tr>
 					    @endforeach
+					    @endif
 					  </tbody>
 					</table>
 				</div>

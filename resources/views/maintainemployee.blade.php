@@ -22,8 +22,8 @@
                         <th>Email</th>
                         <th>Job Title</th>
                         <th>Salary</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
+                        <th class="sorting-disabled">Edit</th>
+                        <th class="sorting-disabled">Delete</th>
                     </thead>
                     <tbody> 
                         @foreach ($employees as $employee)
@@ -93,33 +93,33 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group row">
-                            <label for="inputFullName" class="col-sm-3">Full Name</label>
+                            <label for="inputFullName" class="col-sm-3 text-right">Full Name</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="inputFullName" name='inputFullName' placeholder="Enter Full Name"/>
+                                <input type="text" class="form-control" id="inputFullName" name='inputFullName' placeholder="Enter Full Name" required />
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputAddress" class="col-sm-3">Address</label>
+                            <label for="inputAddress" class="col-sm-3 text-right">Address</label>
                             <div class="col-sm-9">
-                                <textarea class="form-control" id="inputAddress" name='inputAddress' placeholder="Enter Address"></textarea>
+                                <textarea class="form-control" id="inputAddress" name='inputAddress' placeholder="Enter Address" required ></textarea>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputEmail" class="col-sm-3">Email</label>
+                            <label for="inputEmail" class="col-sm-3 text-right">Email</label>
                             <div class="col-sm-9">
-                                <input type="email" class="form-control" id="inputEmail" name='inputEmail' placeholder="Enter Email"/>
+                                <input type="email" class="form-control" id="inputEmail" name='inputEmail' placeholder="Enter Email" required />
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputJobTitle" class="col-sm-3">Job Title</label>
+                            <label for="inputJobTitle" class="col-sm-3 text-right">Job Title</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="inputJobTitle" name='inputJobTitle' placeholder="Enter Job Title"/>
+                                <input type="text" class="form-control" id="inputJobTitle" name='inputJobTitle' placeholder="Enter Job Title" required />
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputSalary" class="col-sm-3">Salary</label>
+                            <label for="inputSalary" class="col-sm-3 text-right">Salary</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="inputSalary" name='inputSalary' placeholder="Enter Salary"/>
+                                <input type="number" class="form-control hide-input-spinner" id="inputSalary" name='inputSalary' placeholder="Enter Salary" min="0" required />
                             </div>
                         </div>
                     </div>
@@ -136,7 +136,7 @@
     <div class="modal fade" id="updateEmpModal" role="dialog" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-md">
           <!-- Modal content-->
-            <form role="form" action = "/maintain/employee/update" method = "post">
+            <form name="updateEmpForm" role="form" action = "/maintain/employee/update" method = "post">
                 <input type = "hidden" name = "_token" value = "{{ csrf_token() }}">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -145,39 +145,39 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group row">
-                            <label for="inputUserID" class="col-sm-3">Employee ID</label>
+                            <label for="inputUserID" class="col-sm-3 text-right">Employee ID</label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" id="inputUserID" name='inputUserID' placeholder="Enter Employee ID" readonly />
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputFullName" class="col-sm-3">Full Name</label>
+                            <label for="inputFullName" class="col-sm-3 text-right">Full Name</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="inputFullName" name='inputFullName' placeholder="Enter Full Name" />
+                                <input type="text" class="form-control" id="inputFullName" name='inputFullName' placeholder="Enter Full Name" required />
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputAddress" class="col-sm-3">Address</label>
+                            <label for="inputAddress" class="col-sm-3 text-right">Address</label>
                             <div class="col-sm-9">
-                                <textarea class="form-control" id="inputAddress" name='inputAddress' placeholder="Enter Address" value = ""></textarea>
+                                <textarea class="form-control" id="inputAddress" name='inputAddress' placeholder="Enter Address" required ></textarea>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputEmail" class="col-sm-3">Email</label>
+                            <label for="inputEmail" class="col-sm-3 text-right">Email</label>
                             <div class="col-sm-9">
-                                <input type="email" class="form-control" id="inputEmail" name='inputEmail' placeholder="Enter Email" value = ""/>
+                                <input type="email" class="form-control" id="inputEmail" name='inputEmail' placeholder="Enter Email" required />
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputJobTitle" class="col-sm-3">Job Title</label>
+                            <label for="inputJobTitle" class="col-sm-3 text-right">Job Title</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="inputJobTitle" name='inputJobTitle' placeholder="Enter Job Title" value = ""/>
+                                <input type="text" class="form-control" id="inputJobTitle" name='inputJobTitle' placeholder="Enter Job Title" required />
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputSalary" class="col-sm-3">Salary</label>
+                            <label for="inputSalary" class="col-sm-3 text-right">Salary</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="inputSalary" name='inputSalary' placeholder="Enter Salary" value = ""/>
+                                <input type="number" class="form-control hide-input-spinner" id="inputSalary" name='inputSalary' placeholder="Enter Salary" min="0" required />
                             </div>
                         </div>
                     </div>

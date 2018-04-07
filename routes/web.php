@@ -11,32 +11,36 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::get('/home', function () {
-    return view('home');
-});
-
 Auth::routes();
 
-Route::get('maintain/employee','MaintainEmployeeController@index');
-Route::post('maintain/employee','MaintainEmployeeController@insert');
-Route::post('maintain/employee/update','MaintainEmployeeController@updateEmployee');
-Route::post('maintain/employee/delete','MaintainEmployeeController@removeEmployee');
+Route::group(['middleware' => ['auth']], function() {
+    // Define Application Routes
 
-Route::get('maintain/project','MaintainProjectController@index');
-Route::post('maintain/project','MaintainProjectController@insert');
-Route::post('maintain/project/update','MaintainProjectController@updateProject');
-Route::post('maintain/project/delete','MaintainProjectController@removeProject');
+	Route::get('/home', function () {
+	    return view('home');
+	});
+	Route::get('maintain/employee','MaintainEmployeeController@index');
+	Route::post('maintain/employee','MaintainEmployeeController@insert');
+	Route::post('maintain/employee/update','MaintainEmployeeController@updateEmployee');
+	Route::post('maintain/employee/delete','MaintainEmployeeController@removeEmployee');
 
-Route::get('manage/project','ManageProjectController@index');
-Route::get('manage/project/showdetails','ManageProjectController@showprojectdetails');
-Route::post('manage/project/addemployee','ManageProjectController@addEmployee');
-Route::post('manage/project/deleteemployee','ManageProjectController@removeEmployee');
+	Route::get('maintain/project','MaintainProjectController@index');
+	Route::post('maintain/project','MaintainProjectController@insert');
+	Route::post('maintain/project/update','MaintainProjectController@updateProject');
+	Route::post('maintain/project/delete','MaintainProjectController@removeProject');
 
-Route::get('manage/generatesummary','GenerateReportController@index');
-Route::get('generatereport','GenerateReportController@generatereport');
+	Route::get('manage/project','ManageProjectController@index');
+	Route::get('manage/project/showdetails','ManageProjectController@showprojectdetails');
+	Route::post('manage/project/addemployee','ManageProjectController@addEmployee');
+	Route::post('manage/project/deleteemployee','ManageProjectController@removeEmployee');
 
-Route::get('employee/viewtimesheet', 'ViewTimeSheetController@index');
-Route::post('employee/viewtimesheet', 'ViewTimeSheetController@insert');
+	Route::get('manage/generatesummary','GenerateReportController@index');
+	Route::get('generatereport','GenerateReportController@generatereport');
+
+	Route::get('employee/viewtimesheet', 'ViewTimeSheetController@index');
+	Route::post('employee/viewtimesheet', 'ViewTimeSheetController@insert');
+	Route::post('employee/viewtimesheet/update', 'ViewTimeSheetController@updateTimesheet');
+
+	Route::get('employee/viewemployeetimesheet', 'ViewEmployeeTimeSheetController@index');
+	Route::post('employee/viewemployeetimesheet/update', 'ViewEmployeeTimeSheetController@updateTimesheet');
+});

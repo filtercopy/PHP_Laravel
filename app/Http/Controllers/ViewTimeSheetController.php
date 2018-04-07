@@ -7,6 +7,7 @@ use DB;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Auth;
+use App\Timesheet;
 
 class ViewTimeSheetController extends Controller
 {
@@ -15,7 +16,7 @@ class ViewTimeSheetController extends Controller
     	$loggedInUser = Auth::user()->UserID;
       	$projects = DB::select("select t.ProjectID, p.ProjectTitle from team t inner join project p on t.ProjectID = p.ProjectID where UserID = $loggedInUser");
 
-      	$timesheet_details = DB::select("select ts.ProjectID, p.ProjectTitle, ts.Date, ts.StartTime, ts.EndTime, TIMEDIFF(ts.EndTime,ts.StartTime) as HoursWorked from timesheet ts inner join project p on ts.ProjectID = p.ProjectID where UserID = $loggedInUser");
+      	$timesheet_details = DB::select("select *, DATE_FORMAT(ts.Date, '%m/%d/%Y') as DateFormatted, TIME_FORMAT(ts.StartTime, '%h:%i %p') as StartTimeFormatted, TIME_FORMAT(ts.EndTime, '%h:%i %p') as EndTimeFormatted, TIME_FORMAT(TIMEDIFF(ts.EndTime,ts.StartTime), '%H:%i') as HoursWorked from timesheet ts inner join project p on ts.ProjectID = p.ProjectID where UserID = $loggedInUser");
 
      	return view('viewtimesheet', ['projects'=>$projects, 'timesheet_details'=>$timesheet_details]);
   	}
@@ -29,5 +30,19 @@ class ViewTimeSheetController extends Controller
 	    
 	    DB::insert('insert into timesheet (UserID, ProjectID, Date, StartTime, EndTime) values(?, ?, ?, ?, ?)', 
 	    	[Auth::user()->UserID, $ProjectID, $Date, $StartTime, $EndTime]);
+	    return $this->index();
 	}
+
+  	public function updateTimesheet(Request $request)
+    {
+    	$UserID = Auth::user()->UserID;
+	    $ProjectID = $request->input('inputProjectId');
+	    $Date = $request->input('inputDate');
+	    $StartTime = $request->input('inputStartTime');
+	    $EndTime = $request->input('inputEndTime');
+
+		Timesheet::where(['UserID'=> $UserID, 'ProjectID'=> $ProjectID, 'Date'=> $Date])
+            ->update(['StartTime' => $StartTime, 'EndTime' => $EndTime]);
+    	return redirect('/employee/viewtimesheet');
+  	}
 }
