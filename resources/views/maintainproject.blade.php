@@ -93,8 +93,8 @@
                 <div class="form-group row">
                   <label for="inputTitle" class="col-sm-3 text-right">Select Supervisor</label>
                   <div class="col-sm-9">
-                    <select class="form-control" id="SupervisorSelection" name="SupervisorSelection">
-                      <option value="0">Please Select</option>
+                    <select class="form-control" id="SupervisorSelection" name="SupervisorSelection" required>
+                      <option value="">Please Select</option>
                       @foreach ($supervisorlist as $supervisorlist)
                       <option value="{{ $supervisorlist->UserID}}">{{$supervisorlist->UserID}} - {{$supervisorlist->FullName}} 
                       </option>
@@ -105,7 +105,7 @@
                 <div class="form-group row">
                   <label for="inputTitle" class="col-sm-3 text-right">Select Employee</label>
                   <div class="col-sm-9">
-                    <select multiple class="form-control" id="EmployeeSelection" name="EmployeeSelection[]">
+                    <select multiple class="form-control" id="EmployeeSelection" name="EmployeeSelection[]" required>
                       @foreach ($employeelist as $employeelist)
                       <option value="{{ $employeelist->UserID}}">{{$employeelist->UserID}} - {{$employeelist->FullName}} 
                       </option>
@@ -189,8 +189,8 @@
                     <div class="form-group row">
                       <label for="inputTitle" class="col-sm-3 text-right">Select Supervisor</label>
                       <div class="col-sm-9">
-                        <select class="form-control" id="SupervisorSelection" name="SupervisorSelection">
-                          <option value="0">Please Select</option>
+                        <select class="form-control" id="SupervisorSelection" name="SupervisorSelection" required>
+                          <option value="">Please Select</option>
                           @foreach ($supervisorlistUpdate as $supervisorlist)
                           <option value="{{ $supervisorlist->UserID}}">{{$supervisorlist->UserID}} - {{$supervisorlist->FullName}} 
                           </option>
@@ -201,7 +201,7 @@
                     <div class="form-group row">
                       <label for="inputTitle" class="col-sm-3 text-right">Select Employee</label>
                       <div class="col-sm-9">
-                        <select multiple class="form-control" id="EmployeeSelection" name="EmployeeSelection[]">
+                        <select multiple class="form-control" id="EmployeeSelection" name="EmployeeSelection[]" required>
                           @foreach ($employeelistUpdate as $employeelist)
                           <option value="{{ $employeelist->UserID}}">{{$employeelist->UserID}} - {{$employeelist->FullName}} 
                           </option>

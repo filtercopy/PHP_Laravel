@@ -36,7 +36,7 @@
                             <td>${{ $employee->Salary}}</td>                         
                             <td>
                                 <p data-placement="top" data-toggle="tooltip" title="Edit">
-                                    <button class="edit-modal btn btn-primary btn-xs" data-id="{{$employee->UserID}}" data-fullname="{{ $employee->FullName }}" data-address="{{ $employee->Address }}" data-emailid="{{ $employee->EmailID }}" data-jobtitle="{{ $employee->JobTitle }}" data-salary="{{ $employee->Salary }}">
+                                    <button class="edit-modal btn btn-primary btn-xs" data-id="{{$employee->UserID}}" data-fullname="{{ $employee->FullName }}" data-address="{{ $employee->Address }}" data-emailid="{{ $employee->EmailID }}" data-jobtitle="{{ $employee->JobTitle }}" data-salary="{{ $employee->Salary }}" data-role="{{ $employee->Role }}">
                                     <span class="glyphicon glyphicon-edit"></span></button>
                                 </p>
                             </td>
@@ -122,6 +122,12 @@
                                 <input type="number" class="form-control hide-input-spinner" id="inputSalary" name='inputSalary' placeholder="Enter Salary" min="0" required />
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label for="inputSupervisor" class="col-sm-3 text-right">Supervisor</label>
+                            <div class="col-sm-9">
+                                <input type="checkbox" id="inputSupervisor" name="inputSupervisor" />
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -178,6 +184,12 @@
                             <label for="inputSalary" class="col-sm-3 text-right">Salary</label>
                             <div class="col-sm-9">
                                 <input type="number" class="form-control hide-input-spinner" id="inputSalary" name='inputSalary' placeholder="Enter Salary" min="0" required />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputSupervisor" class="col-sm-3 text-right">Supervisor</label>
+                            <div class="col-sm-9">
+                                <input type="checkbox" id="inputSupervisor" name="inputSupervisor" />
                             </div>
                         </div>
                     </div>

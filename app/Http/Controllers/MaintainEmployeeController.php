@@ -35,9 +35,10 @@ class MaintainEmployeeController extends Controller
 	    $EmailID = $request->input('inputEmail');
 	    $JobTitle = $request->input('inputJobTitle');
 	    $Salary = $request->input('inputSalary');
+	    $IsSupervisor = $request->input('inputSupervisor') ? 2 : 3;	//Supervisor Role: 2
 
 	    $UserID = DB::table('employee')->insertGetId(
-		    ['Password' => $Password, 'FullName' => $FullName, 'Address' => $Address, 'EmailID' => $EmailID, 'JobTitle' => $JobTitle, 'Salary' => $Salary]
+		    ['Password' => $Password, 'FullName' => $FullName, 'Address' => $Address, 'EmailID' => $EmailID, 'JobTitle' => $JobTitle, 'Salary' => $Salary, 'Role' => $IsSupervisor]
 		);
 	    return $this->index();
 	}
@@ -53,9 +54,10 @@ class MaintainEmployeeController extends Controller
 	    $EmailID = $request->input('inputEmail');
 	    $JobTitle = $request->input('inputJobTitle');
 	    $Salary = $request->input('inputSalary');
+	    $IsSupervisor = $request->input('inputSupervisor') ? 2 : 3;	//Supervisor Role: 2
 
 		Employee::where('UserID', $UserID)
-            ->update(['FullName' => $FullName, 'Address' => $Address, 'EmailID' => $EmailID, 'JobTitle' => $JobTitle, 'Salary' => $Salary]);
+            ->update(['FullName' => $FullName, 'Address' => $Address, 'EmailID' => $EmailID, 'JobTitle' => $JobTitle, 'Salary' => $Salary, 'Role' => $IsSupervisor]);
 
 	    return redirect('/maintain/employee');
 	}

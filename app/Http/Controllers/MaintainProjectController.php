@@ -19,8 +19,8 @@ class MaintainProjectController extends Controller
     {
      	$supervisorlist = DB::select('select UserID, FullName from employee where Role = 2');
      	$employeelist = DB::select('select UserID, FullName from employee where JobTitle != "Supervisor" ');
-    	$projects = DB::select('(select p.ProjectID, p.ProjectTitle, p.SupervisorID, e.Fullname as SupervisorName, p.Budget, p.CustomerName from Project p inner join employee e on p.SupervisorID = e.UserID)
-    		UNION (select ProjectID, ProjectTitle, "Not Assigned" as SupervisorID , "Not Assigned" as SupervisorName, Budget, CustomerName from Project where SupervisorID = 0)');
+    	$projects = DB::select('(select p.ProjectID, p.ProjectTitle, p.SupervisorID, e.Fullname as SupervisorName, p.Budget, p.CustomerName from project p inner join employee e on p.SupervisorID = e.UserID)
+    		UNION (select ProjectID, ProjectTitle, "Not Assigned" as SupervisorID , "Not Assigned" as SupervisorName, Budget, CustomerName from project where SupervisorID = 0)');
     	$employeeProjectList = DB::select('select e.UserID, e.FullName, t.ProjectID from employee e inner join team t on e.UserID = t.UserID where e.Role != 2 ');
 
     	$supervisorlistUpdate = $supervisorlist;	//Need seperate variable for Update Modal loops
