@@ -11,6 +11,9 @@ use App\Timesheet;
 
 class ViewTimeSheetController extends Controller
 {
+	/*
+	* Show List of Timesheets in the system
+	*/
 	public function index()
     {
     	$loggedInUser = Auth::user()->UserID;
@@ -21,6 +24,9 @@ class ViewTimeSheetController extends Controller
      	return view('viewtimesheet', ['projects'=>$projects, 'timesheet_details'=>$timesheet_details]);
   	}
 
+	/*
+	* Insert timesheet in the system
+	*/
 	public function insert(Request $request)
     {
 	    $ProjectID = $request->input('projSelection');
@@ -33,6 +39,9 @@ class ViewTimeSheetController extends Controller
 	    return $this->index();
 	}
 
+	/*
+	* Update own Timesheets in the system
+	*/
   	public function updateTimesheet(Request $request)
     {
     	$UserID = Auth::user()->UserID;

@@ -10,7 +10,7 @@
 			<label for="inputDay" class="col-md-2 col-xs-4 text-right">Select Day</label>
 			<div class="col-md-4 col-xs-8">
 				<div class='input-group'>
-					<input type="date" class="form-control" id="inputDay" name="inputDay" placeholder="Enter Day" required />
+					<input type="date" class="form-control" id="inputDay" name="inputDay" placeholder="Enter Day" min="{{ date('Y-m-d',strtotime('-14 days')) }}" required />
                     <label class="input-group-addon" for="inputDay">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </label>
