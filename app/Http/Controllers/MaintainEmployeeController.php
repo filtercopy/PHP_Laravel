@@ -29,15 +29,16 @@ class MaintainEmployeeController extends Controller
 	 */
    	public function insert(Request $request)
     {
-	    $Password = Hash::make($request->input('inputEmail'));	//Default Temporary Password same as Email ID
+	    $EmailID = $request->input('inputEmail');
+	    $Password = Hash::make(explode('@',$EmailID)[0]);	//Default Temporary Password same as Email ID
 	    $FullName = $request->input('inputFullName');
 	    $Address = $request->input('inputAddress');
-	    $EmailID = $request->input('inputEmail');
 	    $JobTitle = $request->input('inputJobTitle');
 	    $Salary = $request->input('inputSalary');
+	    $IsSupervisor = $request->input('inputSupervisor') ? 2 : 3;	//Supervisor Role: 2
 
 	    $UserID = DB::table('employee')->insertGetId(
-		    ['Password' => $Password, 'FullName' => $FullName, 'Address' => $Address, 'EmailID' => $EmailID, 'JobTitle' => $JobTitle, 'Salary' => $Salary]
+		    ['Password' => $Password, 'FullName' => $FullName, 'Address' => $Address, 'EmailID' => $EmailID, 'JobTitle' => $JobTitle, 'Salary' => $Salary, 'Role' => $IsSupervisor]
 		);
 	    return $this->index();
 	}
@@ -47,15 +48,17 @@ class MaintainEmployeeController extends Controller
 	 */
 	public function updateEmployee(Request $request) 
 	{
+		$EmailID = $request->input('inputEmail');
+	    $Password = Hash::make(explode('@',$EmailID)[0]);	//Default Temporary Password same as Email ID
 		$UserID = $request->input('inputUserID');
 	    $FullName = $request->input('inputFullName');
 	    $Address = $request->input('inputAddress');
-	    $EmailID = $request->input('inputEmail');
 	    $JobTitle = $request->input('inputJobTitle');
 	    $Salary = $request->input('inputSalary');
+	    $IsSupervisor = $request->input('inputSupervisor') ? 2 : 3;	//Supervisor Role: 2
 
 		Employee::where('UserID', $UserID)
-            ->update(['FullName' => $FullName, 'Address' => $Address, 'EmailID' => $EmailID, 'JobTitle' => $JobTitle, 'Salary' => $Salary]);
+            ->update(['Password' => $Password, 'FullName' => $FullName, 'Address' => $Address, 'EmailID' => $EmailID, 'JobTitle' => $JobTitle, 'Salary' => $Salary, 'Role' => $IsSupervisor]);
 
 	    return redirect('/maintain/employee');
 	}

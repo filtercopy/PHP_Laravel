@@ -1,6 +1,7 @@
 .main-body .navbar-inverse .navbar-nav>.active>a,
 .main-body .pagination>.active>a, .main-body .pagination>.active>a:focus,
-.main-body .pagination>.active>span, .main-body .pagination>.active>span:hover {
+.main-body .pagination>.active>span, .main-body .pagination>.active>span:hover,
+.main-body .btn-primary.disabled:hover {
 	background-color: #4CAF43;
     border-color: #259d6d;
 }
@@ -25,4 +26,10 @@ input.hide-input-spinner[type=number]::-webkit-inner-spin-button,
 input.hide-input-spinner[type=number]::-webkit-outer-spin-button { 
   -webkit-appearance: none; 
   margin: 0; 
+}
+
+.main-body input[type=checkbox] {
+    height: 1.5em;
+    margin: 0;
+    width: 1.5em;
 }

@@ -22,6 +22,11 @@ $(document).ready(function(){
         $('#updateEmpModal #inputEmail').val($(this).data('emailid'));
         $('#updateEmpModal #inputJobTitle').val($(this).data('jobtitle'));
         $('#updateEmpModal #inputSalary').val($(this).data('salary'));
+        if($(this).data('role')==2) {
+            $('#updateEmpModal #inputSupervisor').prop('checked',true);
+        } else {
+            $('#updateEmpModal #inputSupervisor').prop('checked',false);
+        }
     });
 
     //Maintain Employee - Delete Record Modal
@@ -35,7 +40,7 @@ $(document).ready(function(){
 
     //Maintain Project - Load data in Modal on Edit Project
     $(document).on('click', '#prjTable .edit-modal', function() {
-        var supervisorID = $(this).data('supervisor') != "Not Assigned" ? $(this).data('supervisor') : 0;
+        var supervisorID = $(this).data('supervisor') != "Not Assigned" ? $(this).data('supervisor') : '';
         $('#updatePrjModal').modal('show');
 
         $('#updatePrjModal #inputProjectID').val($(this).data('id'));
@@ -78,7 +83,7 @@ $(document).ready(function(){
     });
 
     //Update MY Timesheet - Load data in Modal on Update Timesheet
-    $(document).on('click', '#myTimesheetTable .edit-modal', function() {
+    $(document).on('click', '#myTimesheetTable .edit-modal:not(".disabled")', function() {
         $('#updateMyTimesheetModal').modal('show');        
 
         $('#updateMyTimesheetModal #inputProjectId').val($(this).data('projectid'));
@@ -89,7 +94,7 @@ $(document).ready(function(){
     });
 
     //Update Employee Timesheet - Load data in Modal on Update Timesheet
-    $(document).on('click', '#timesheetTable .edit-modal', function() {
+    $(document).on('click', '#timesheetTable .edit-modal:not(".disabled")', function() {
         $('#updateEmpTimesheetModal').modal('show');        
 
         $('#updateEmpTimesheetModal #inputEmployeeId').val($(this).data('id'));

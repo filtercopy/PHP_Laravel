@@ -10,7 +10,7 @@
 			<label for="inputDay" class="col-md-2 col-xs-4 text-right">Select Day</label>
 			<div class="col-md-4 col-xs-8">
 				<div class='input-group'>
-					<input type="date" class="form-control" id="inputDay" name="inputDay" placeholder="Enter Day" required />
+					<input type="date" class="form-control" id="inputDay" name="inputDay" placeholder="Enter Day" min="{{ date('Y-m-d',strtotime('-14 days')) }}" required />
                     <label class="input-group-addon" for="inputDay">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </label>
@@ -42,8 +42,8 @@
 		</div>
 		<br>
 		<div class="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12">
-			<button type="button" class="btn btn-default col-lg-offset-5 col-lg-3 col-md-offset-5 col-md-3 col-sm-offset-5 col-sm-3 col-xs-offset-5 col-xs-3 pull-left" data-dismiss="modal">Cancel</button>
-			<button type="submit" class="btn btn-primary col-lg-3 col-md-3 col-sm-offset-1 col-sm-3 col-xs-3 pull-right">Update</button>
+			<!-- <button type="button" class="btn btn-default col-lg-offset-5 col-lg-3 col-md-offset-5 col-md-3 col-sm-offset-5 col-sm-3 col-xs-offset-5 col-xs-3 pull-left" data-dismiss="modal">Cancel</button> -->
+			<button type="submit" class="btn btn-primary col-lg-3 col-md-3 col-sm-offset-1 col-sm-3 col-xs-3 pull-right">Create</button>
 		</div>
 	</form>
 
@@ -78,7 +78,7 @@
                             <td>{{ $timesheet_detail->HoursWorked}}</td>                         
                             <td>
                               <p data-placement="top" data-toggle="tooltip" title="Edit">
-                              <button class="edit-modal btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-projectid="{{$timesheet_detail->ProjectID}}" data-projecttitle="{{$timesheet_detail->ProjectTitle}}" data-date="{{$timesheet_detail->Date}}" data-starttime="{{$timesheet_detail->StartTime}}" data-endtime="{{$timesheet_detail->EndTime}}" data-hours="{{$timesheet_detail->HoursWorked}}">
+                              <button class="edit-modal btn btn-primary btn-xs {{ $timesheet_detail->CanEdit ? '' : 'disabled' }}" data-title="Edit" data-toggle="modal" data-projectid="{{$timesheet_detail->ProjectID}}" data-projecttitle="{{$timesheet_detail->ProjectTitle}}" data-date="{{$timesheet_detail->Date}}" data-starttime="{{$timesheet_detail->StartTime}}" data-endtime="{{$timesheet_detail->EndTime}}" data-hours="{{$timesheet_detail->HoursWorked}}">
                               <span class="glyphicon glyphicon-edit"></span></button></p>
                           </td>
                         </tr>
@@ -111,7 +111,7 @@
                         <div class="form-group row">
                             <label for="inputDate" class="col-sm-3 text-right">Date</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="inputDate" name='inputDate' placeholder="Enter Date" readonly />
+                                <input type="date" class="form-control" id="inputDate" name='inputDate' placeholder="Enter Date" readonly />
                             </div>
                         </div>
                         <div class="form-group row">

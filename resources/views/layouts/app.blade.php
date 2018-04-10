@@ -56,7 +56,7 @@
                                 <li class="{{ Request::is('employee/viewtimesheet') ? 'active' : '' }}">
                                     <a href="{{ url('employee/viewtimesheet') }}">My Timesheet</a>
                                 </li>
-                                <li class="{{ Request::is('employee/viewemployeetimesheet') ? 'active' : '' }}">
+                                <li class="{{ Auth::user()->Role != 3 ? '' : 'hidden' }} {{ Request::is('employee/viewemployeetimesheet') ? 'active' : '' }}">
                                     <a href="{{ url('employee/viewemployeetimesheet') }}">Employee Timesheet</a>
                                 </li>
                             </ul>
