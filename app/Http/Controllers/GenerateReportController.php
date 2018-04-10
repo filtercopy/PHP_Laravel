@@ -20,9 +20,13 @@ class GenerateReportController extends Controller
       if(Auth::user()->Role == 1) {
         $projects = project::all();
       } else {
-        $projects = DB::select("select * from project where SupervisorID = $loggedInUser");
+        $projects = DB::select('CALL selectProjBySupervisor(?)', array($loggedInUser));
       }
-     	return view('generatesummary',array('projects'=>$projects, 'getselectedproj'=>0, 'getselectedreport'=>0, 'reports'=>[]));
+     	return view('generatesummary',
+          ['projects'=>$projects, 
+          'getselectedproj'=>0, 
+          'getselectedreport'=>0, 
+          'reports'=>[]]);
   	}
 
   	public function generatereport(Request $request)
@@ -31,27 +35,16 @@ class GenerateReportController extends Controller
 
     	$getselectedproj = Input::get('projSelection');
     	$getreporttype = Input::get('reportSelection');
-    	$getstartdate =  Input::get('inputStartDate');
+    	$getstartdate = Input::get('inputStartDate');
     	$getenddate = Input::get('inputEndDate');
 
-    	if($getreporttype == '1')
-    	{
- 			$reports = DB::select("select *, TIME_FORMAT(ts.StartTime, '%h:%i %p') as StartTime, TIME_FORMAT(ts.EndTime, '%h:%i %p') as EndTime, TIME_FORMAT(TIMEDIFF(ts.EndTime,ts.StartTime), '%H:%i') as HoursWorked from timesheet ts inner join employee e on ts.UserID = e.UserID inner join project p on ts.ProjectID = p.ProjectID where ts.ProjectID = ? and ts.Date = CURDATE()", [$getselectedproj]);
-		}
- 		else if($getreporttype == '2')
- 		{
- 			$reports = DB::select("select *, TIME_FORMAT(ts.StartTime, '%h:%i %p') as StartTime, TIME_FORMAT(ts.EndTime, '%h:%i %p') as EndTime, TIME_FORMAT(TIMEDIFF(ts.EndTime,ts.StartTime), '%H:%i') as HoursWorked from timesheet ts inner join employee e on ts.UserID = e.UserID inner join project p on ts.ProjectID = p.ProjectID where ts.ProjectID = ? and ts.Date BETWEEN DATE_SUB( CURDATE( ) , INTERVAL( WEEKDAY( CURDATE( ) ) ) DAY ) AND CURDATE( )", [$getselectedproj]);
- 		}
- 		else if($getreporttype == '3')
- 		{
- 			$reports = DB::select("select *, TIME_FORMAT(ts.StartTime, '%h:%i %p') as StartTime, TIME_FORMAT(ts.EndTime, '%h:%i %p') as EndTime, TIME_FORMAT(TIMEDIFF(ts.EndTime,ts.StartTime), '%H:%i') as HoursWorked from timesheet ts inner join employee e on ts.UserID = e.UserID inner join project p on ts.ProjectID = p.ProjectID where ts.ProjectID = ? and ts.Date >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)",[$getselectedproj]);
- 		}
- 		else 
- 		{
- 			$reports = DB::select("select *, TIME_FORMAT(ts.StartTime, '%h:%i %p') as StartTime, TIME_FORMAT(ts.EndTime, '%h:%i %p') as EndTime, TIME_FORMAT(TIMEDIFF(ts.EndTime,ts.StartTime), '%H:%i') as HoursWorked from timesheet ts inner join employee e on ts.UserID = e.UserID inner join project p on ts.ProjectID = p.ProjectID where ts.ProjectID = ? and ts.Date >= ? and ts.Date <= ?", [$getselectedproj, $getstartdate, $getenddate]);
- 		}
+      //Get the reports based on ReportType
+ 			$reports = DB::select('CALL generateReport(?,?,?,?)',array($getselectedproj, $getreporttype, $getstartdate, $getenddate));
 
- 		//dd($getselectedproj, $getreporttype, $reports);
- 		return view('generatesummary',array('projects'=>$projects, 'getselectedproj'=>$getselectedproj, 'getselectedreport'=>$getreporttype,'reports'=>$reports));
+      return view('generatesummary',
+        array('projects'=>$projects, 
+        'getselectedproj'=>$getselectedproj,
+        'getselectedreport'=>$getreporttype,
+        'reports'=>$reports));
   	}
 }

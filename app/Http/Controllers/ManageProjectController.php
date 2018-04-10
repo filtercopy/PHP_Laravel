@@ -21,27 +21,34 @@ class ManageProjectController extends Controller
       if(Auth::user()->Role == 1) {
         $projects = project::all();
       } else {
-        $projects = DB::select("select * from project where SupervisorID = $loggedInUser");
+        $projects = DB::select('CALL selectProjBySupervisor(?)', array($loggedInUser));
       }
-     	return view('manageproject',array('projects'=>$projects,'getselectedproj'=>0,'show_projects'=>[], 'employees'=>[], 'addemployees'=>[]));
+     	return view('manageproject',
+        ['projects'=>$projects,
+        'getselectedproj'=>0,
+        'show_projects'=>[], 
+        'employees'=>[], 
+        'addemployees'=>[]]);
   	}
 
   	public function showprojectdetails(Request $request)
     {	
     	$projects = project::all();
     	$getselectedproj = Input::get('projSelection');
-    	$show_projects = DB::select('select * from project where ProjectID = ?', [$getselectedproj]);
+    	$show_projects = DB::select('CALL showProjectDetails(?)', array($getselectedproj));
+    	$employees = DB::select('CALL showEmployeesByProject(?)',array($getselectedproj));
+    	$addemployees = DB::select('CALL addEmployeesByProject(?)',array($getselectedproj));
 
-    	$employees = DB::select('select t.UserID, e.FullName, e.Address, e.EmailID, e.JobTitle from team t inner join employee e on t.UserID = e.UserID where t.ProjectID = ?', [$getselectedproj]);
-
-    	$addemployees = DB::select('select UserID, FullName, Address, EmailID, JobTitle from employee where UserID not in (select UserID from team where ProjectID = ?)', [$getselectedproj]);
-
-		  return view('manageproject',array('projects'=>$projects,'getselectedproj'=>$getselectedproj,'show_projects'=>$show_projects,'employees'=>$employees, 'addemployees'=>$addemployees));
+		  return view('manageproject',
+        ['projects'=>$projects,
+        'getselectedproj'=>$getselectedproj,
+        'show_projects'=>$show_projects,
+        'employees'=>$employees, 
+        'addemployees'=>$addemployees]);
   	}
 
   	public function addEmployee(Request $request)
     {	
-    	//dd('I AM HERE');
     	$getselectedemp = Input::get('addEmployeesList');
       $getselectedproj = Input::get('getselectedproj');
 
@@ -49,7 +56,7 @@ class ManageProjectController extends Controller
       {
         foreach ($getselectedemp as $id)
         {
-          DB::insert('insert into team (UserID, ProjectID) values(?, ?)', [$id, $getselectedproj]);
+          DB::select('CALL insertEmployeeIntoTeam(?,?)',array($Selected, $ProjectID));
         }
       }
     	return redirect("/manage/project/showdetails?projSelection=$getselectedproj");
