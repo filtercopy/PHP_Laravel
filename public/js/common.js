@@ -86,6 +86,8 @@ $(document).ready(function(){
     $(document).on('click', '#myTimesheetTable .edit-modal:not(".disabled")', function() {
         $('#updateMyTimesheetModal').modal('show');        
 
+
+        $('#updateMyTimesheetModal #inputTimesheetID').val($(this).data('timesheetid'));
         $('#updateMyTimesheetModal #inputProjectId').val($(this).data('projectid'));
         $('#updateMyTimesheetModal #inputProject').val($(this).data('projectid') + " - " + $(this).data('projecttitle'));
         $('#updateMyTimesheetModal #inputDate').val($(this).data('date'));

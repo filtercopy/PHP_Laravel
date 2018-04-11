@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 10, 2018 at 08:22 PM
+-- Generation Time: Apr 11, 2018 at 11:37 PM
 -- Server version: 10.1.30-MariaDB
 -- PHP Version: 7.2.1
 
@@ -28,6 +28,14 @@ DELIMITER $$
 --
 CREATE DEFINER=`root`@`localhost` PROCEDURE `addEmployeesByProject` (IN `getselectedproj` INT)  BEGIN
 	select UserID, FullName, Address, EmailID, JobTitle from employee where UserID not in (select UserID from team where ProjectID = getselectedproj);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `fillTimesheet` (IN `loggedInUser` INT, IN `projID` INT, IN `datetimesheet` DATE, IN `tsStartTime` TIME, IN `tsEndTime` TIME)  NO SQL
+BEGIN
+	IF EXISTS( select * from timesheet where UserID = loggedInUser and ProjectID = projID and ((tsEndTime between tsStartTime and StartTime) OR (tsStartTime between EndTime and tsEndTime)))
+    THEN 
+		insert into timesheet (UserID, ProjectID, Date, StartTime, EndTime) values (loggedInUser, projID, datetimesheet, tsStartTime, tsEndTime);
+    END IF;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `generateReport` (IN `getselectedproj` INT, IN `getreporttype` INT, IN `getstartdate` DATE, IN `getenddate` DATE)  NO SQL
@@ -59,7 +67,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `insertEmployeeIntoTeam` (IN `Select
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `mpSelectEmployee` ()  BEGIN
-   	select UserID, FullName from employee where JobTitle != "Supervisor";
+   	select UserID, FullName from employee where Role != 2;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `mpSelectEmpProj` ()  BEGIN
@@ -67,9 +75,9 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `mpSelectEmpProj` ()  BEGIN
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `mpSelectProject` ()  BEGIN
-	(select p.ProjectID, p.ProjectTitle, p.SupervisorID, e.Fullname as SupervisorName, p.Budget, p.CustomerName from Project p inner join employee e on p.SupervisorID = e.UserID)
+	(select p.ProjectID, p.ProjectTitle, p.SupervisorID, e.Fullname as SupervisorName, p.Budget, p.CustomerName from project p inner join employee e on p.SupervisorID = e.UserID)
 UNION 
-(select ProjectID, ProjectTitle, "Not Assigned" as SupervisorID , "Not Assigned" as SupervisorName, Budget, CustomerName from Project where SupervisorID = 0);
+(select ProjectID, ProjectTitle, "Not Assigned" as SupervisorID , "Not Assigned" as SupervisorName, Budget, CustomerName from project where SupervisorID = 0);
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `mpSelectSupervisor` ()  BEGIN
@@ -106,7 +114,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `viewEmployeeTimesheet` (IN `loggedI
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `viewProjects` (IN `loggedInUser` INT(30))  BEGIN
-	select t.ProjectID, p.ProjectTitle from team t inner join project p on t.ProjectID = p.ProjectID where UserID = loggedInUser;
+	select t.ProjectID, p.ProjectTitle from team t inner join project p on t.ProjectID = p.ProjectID where t.UserID = loggedInUser;
 END$$
 
 DELIMITER ;
@@ -143,9 +151,9 @@ INSERT INTO `employee` (`UserID`, `password`, `FullName`, `Address`, `EmailID`, 
 (1834535, '$2y$10$2Ll4yMhw.2YDQggDgIi5qONzrla4aXzTZNPLbtkZNocmXhDS.J.P2', 'Komal Thakkar', 'DeKalb', 'komalthakkar30@yahoo.in', 'Software Developer', '90000', 3, 'NGvjBKwP1qvN8NzkDtFmO6UxqDJOOtUHnqpB21YBFEOCoxiGnVpIi1n2e1Ru', NULL, NULL),
 (1835791, '1835791', 'Priya Mukherjee', 'Thornhill Dr, Carol Stream, IL, 60188', 'priyamukherjee@gmail.com', 'Software Developer', '70000', 3, NULL, NULL, NULL),
 (1875643, '1875643', 'John Bolton', 'San Jose, California, 54636', 'johnbolton@gmail.com', 'Test Engineer', '65000', 2, NULL, NULL, NULL),
-(1875644, '$2y$10$DfqPkf09pZ0hgxbVwe08ouk.yLMOjmEOZqmeiCrartVZzNvmlvK6C', 'Olivia', 'California', 'olivia@gmail.com', 'Administrator', '90000', 1, 'p3RP1JCn7FLzsjKGwUZcnwwiVU0EjjYqxlpX7KZ7ASR14oueuvTiClcaZc9W', NULL, NULL),
-(1875645, '$2y$10$wqp7zyNdF1lsfVoaG8JtrOw1xmAOBw3nQEBl4AMxJHcqAI88XPaQG', 'Keerthi Sai', 'Weeling, Il, 60165', 'keerthisai@gmail.com', 'Software Engineer', '90000', 2, 'ahr3m5RrOlaw2yHw3F7eGpam2a6ZlxSDEceIJbbEqv1O75Y6zEcnI6r7FSJq', NULL, NULL),
-(1875646, '$2y$10$iTAAgFaxD.xc/y/epUccNuD5TwRuJtqx6MfVhEeivYUt1Ou2S9SHK', 'Peter Pan', 'Tempe, Arizona, 41827', 'peterpan@gmail.com', 'Network Engineer', '80000', 3, 'AqJKGzYvXMsoVyqj5ryAwSg92WJ7hmwDzE7YJziWIACWMgshUEYrZVdtc0wP', NULL, NULL);
+(1875644, '$2y$10$DfqPkf09pZ0hgxbVwe08ouk.yLMOjmEOZqmeiCrartVZzNvmlvK6C', 'Olivia', 'California', 'olivia@gmail.com', 'Administrator', '90000', 1, 'dLH8lubLnAyCgwJHLbtAOwwsO2Nbxco9HQY0fJlxdGAz4KOa4UHtUvzUAd3v', NULL, NULL),
+(1875645, '$2y$10$wqp7zyNdF1lsfVoaG8JtrOw1xmAOBw3nQEBl4AMxJHcqAI88XPaQG', 'Keerthi Sai', 'Weeling, Il, 60165', 'keerthisai@gmail.com', 'Software Engineer', '90000', 2, 'bYowxBKpsZbIjAcNGS3USB63tYHsHJcygwoNqrUFNaS3mbAo7u1agWp1sSl7', NULL, NULL),
+(1875646, '$2y$10$iTAAgFaxD.xc/y/epUccNuD5TwRuJtqx6MfVhEeivYUt1Ou2S9SHK', 'Peter Pan', 'Tempe, Arizona, 41827', 'peterpan@gmail.com', 'Network Engineer', '80000', 3, 'EQ0fQcB1jVSLEjYy93QRNeHjLmqnTZfcWqui5DRCasb4OXt1AdqLDu4EDcKG', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -208,6 +216,7 @@ INSERT INTO `team` (`UserID`, `ProjectID`, `updated_at`) VALUES
 (1835791, 100001, NULL),
 (1835791, 100004, NULL),
 (1835791, 100005, NULL),
+(1875644, 100005, NULL),
 (1875646, 100001, NULL);
 
 -- --------------------------------------------------------
@@ -217,6 +226,7 @@ INSERT INTO `team` (`UserID`, `ProjectID`, `updated_at`) VALUES
 --
 
 CREATE TABLE `timesheet` (
+  `TimesheetID` int(30) NOT NULL,
   `UserID` int(30) NOT NULL,
   `ProjectID` int(30) NOT NULL,
   `Date` date NOT NULL,
@@ -229,12 +239,14 @@ CREATE TABLE `timesheet` (
 -- Dumping data for table `timesheet`
 --
 
-INSERT INTO `timesheet` (`UserID`, `ProjectID`, `Date`, `StartTime`, `EndTime`, `updated_at`) VALUES
-(1678345, 100001, '2018-04-06', '09:15:00', '17:30:00', NULL),
-(1678345, 100002, '2018-03-15', '09:30:00', '17:00:00', NULL),
-(1834535, 100001, '2018-04-03', '09:30:00', '17:00:00', NULL),
-(1834535, 100002, '2018-03-31', '14:30:00', '17:15:00', '2018-04-09 02:11:57'),
-(1875646, 100001, '2018-04-08', '09:30:00', '17:30:00', NULL);
+INSERT INTO `timesheet` (`TimesheetID`, `UserID`, `ProjectID`, `Date`, `StartTime`, `EndTime`, `updated_at`) VALUES
+(1, 1875644, 100005, '2018-04-10', '08:00:00', '18:00:00', NULL),
+(2, 1875644, 100005, '2018-03-20', '11:30:00', '16:30:00', NULL),
+(3, 1875646, 100001, '2018-04-03', '09:30:00', '10:30:00', '2018-04-11 21:16:16'),
+(4, 1875646, 100001, '2018-04-03', '08:00:00', '10:30:00', '2018-04-11 20:23:25'),
+(5, 1875646, 100001, '2018-03-28', '11:00:00', '15:00:00', NULL),
+(6, 1875646, 100001, '2018-03-28', '11:00:00', '15:00:00', NULL),
+(7, 1875646, 100001, '2018-04-11', '11:00:00', '17:00:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -284,8 +296,9 @@ ALTER TABLE `team`
 -- Indexes for table `timesheet`
 --
 ALTER TABLE `timesheet`
-  ADD PRIMARY KEY (`UserID`,`ProjectID`),
-  ADD KEY `ProjectID` (`ProjectID`);
+  ADD PRIMARY KEY (`TimesheetID`),
+  ADD KEY `timesheet_ibfk_1` (`UserID`),
+  ADD KEY `timesheet_ibfk_2` (`ProjectID`);
 
 --
 -- Indexes for table `user_role`
@@ -308,6 +321,12 @@ ALTER TABLE `employee`
 --
 ALTER TABLE `project`
   MODIFY `ProjectID` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100006;
+
+--
+-- AUTO_INCREMENT for table `timesheet`
+--
+ALTER TABLE `timesheet`
+  MODIFY `TimesheetID` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `user_role`

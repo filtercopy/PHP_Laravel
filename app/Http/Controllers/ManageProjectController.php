@@ -56,7 +56,7 @@ class ManageProjectController extends Controller
       {
         foreach ($getselectedemp as $id)
         {
-          DB::select('CALL insertEmployeeIntoTeam(?,?)',array($Selected, $ProjectID));
+          DB::select('CALL insertEmployeeIntoTeam(?,?)',array($id, $getselectedproj));
         }
       }
     	return redirect("/manage/project/showdetails?projSelection=$getselectedproj");
