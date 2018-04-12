@@ -47,7 +47,7 @@
                         <li class="{{ Auth::user()->Role == 1 ? '' : 'hidden' }} {{ Request::is('maintain/employee') ? 'active' : '' }}"><a href="{{ url('maintain/employee') }}">Maintain Employee</a></li>
                         <li class="{{ Auth::user()->Role == 1 ? '' : 'hidden' }} {{ Request::is('maintain/project') ? 'active' : '' }}"><a href="{{ url('maintain/project') }}">Maintain Project</a></li>
                         <li class="{{ Auth::user()->Role != 3 ? '' : 'hidden' }} {{ Request::is('manage/project') || Request::is('manage/project/*') ? 'active' : '' }}"><a href="{{ url('manage/project') }}">Manage Project</a></li>
-                        <li class="{{ Auth::user()->Role != 3 ? '' : 'hidden' }} {{ Request::is('manage/generatesummary') ? 'active' : '' }}"><a href="{{ url('manage/generatesummary') }}">Generate Summary</a></li>
+                        <li class="{{ Auth::user()->Role != 3 ? '' : 'hidden' }} {{ Request::is('manage/generatesummary') || Request::is('generatereport') ? 'active' : '' }}"><a href="{{ url('manage/generatesummary') }}">Generate Summary</a></li>
                         <li class="{{ Request::is('employee/viewtimesheet') ? 'active' : '' }} {{ Request::is('employee/viewemployeetimesheet') ? 'active' : '' }}">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
                                     View Timesheet <span class="caret"></span>

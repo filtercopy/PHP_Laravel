@@ -8,8 +8,8 @@
     <div class="form-group row">
       <label for="projSelection" class="col-lg-2 col-md-2 col-sm-2 col-xs-4 text-right">Select Project</label>
       <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-        <select class="form-control" id="projSelection" name="projSelection">
-          <option value="0">Please Select</option>
+        <select class="form-control" id="projSelection" name="projSelection" required>
+          <option value="">Please Select</option>
           @foreach ($projects as $project)
           <option value="{{ $project->ProjectID }}" {{$getselectedproj == $project->ProjectID ? "selected" : ""}}>{{ $project->ProjectTitle }}</option>
           @endforeach
