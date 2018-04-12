@@ -18,6 +18,11 @@ class ViewTimeSheetController extends Controller
     {
     	$loggedInUser = Auth::user()->UserID;
       	$projects = DB::select('CALL viewProjects(?)', array($loggedInUser));
+      	$projects1 = [];
+      	if(Auth::user()->Role == 2) {
+  			$projects1 = DB::select('select * from project where SupervisorID=?',[$loggedInUser]);
+      	}
+      	$projects = array_merge($projects ,$projects1);
       	$timesheet_details = DB::select('CALL viewEmployeeTimesheet(?,?)',array($loggedInUser,0));
  
       	return view('viewtimesheet', 

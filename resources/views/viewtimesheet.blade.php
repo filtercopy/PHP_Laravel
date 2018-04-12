@@ -43,7 +43,7 @@
 		<br>
 		<div class="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12">
 			<!-- <button type="button" class="btn btn-default col-lg-offset-5 col-lg-3 col-md-offset-5 col-md-3 col-sm-offset-5 col-sm-3 col-xs-offset-5 col-xs-3 pull-left" data-dismiss="modal">Cancel</button> -->
-			<button type="submit" class="btn btn-primary col-lg-3 col-md-3 col-sm-offset-1 col-sm-3 col-xs-3 pull-right">Create</button>
+			<button type="submit" class="btn btn-primary col-lg-3 col-md-3 col-sm-offset-1 col-sm-3 col-xs-3 pull-right">Submit</button>
 		</div>
 	</form>
 
@@ -65,7 +65,7 @@
                         <th>Start Time</th>
                         <th>End Time</th>
                         <th>Hours Worked</th>
-                        <th>Edit</th>
+                        <th class="sorting-disabled">Edit</th>
                     </thead>
                     <tbody> 
                         @foreach ($timesheet_details as $timesheet_detail)

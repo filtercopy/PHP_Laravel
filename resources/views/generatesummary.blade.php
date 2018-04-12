@@ -31,13 +31,13 @@
 		    </div>
 	  	</div>
 	  	<div class="form-group row">
-			<label for="inputStartTime" class="col-lg-2 col-md-2 col-sm-4 col-xs-3 text-right">Start Date</label>
+			<label for="inputStartTime" class="col-lg-2 col-md-2 col-sm-4 col-xs-3 text-right">From Date</label>
 			<div class="col-lg-4 col-md-4 col-sm-5 col-xs-6">
 				<input type="date" class="form-control" id="inputStartDate" name="inputStartDate" placeholder="Enter Start Date"/>
 			</div>
 	    </div>
 	  	<div class="form-group row">
-			<label for="inputEndTime" class="col-lg-2 col-md-2 col-sm-4 col-xs-3 text-right">End Date</label>
+			<label for="inputEndTime" class="col-lg-2 col-md-2 col-sm-4 col-xs-3 text-right">To Date</label>
 			<div class="col-lg-4 col-md-4 col-sm-5 col-xs-6">
 				<input type="date" class="form-control" id="inputEndDate" name="inputEndDate" placeholder="Enter End Date"/>
 			</div>
