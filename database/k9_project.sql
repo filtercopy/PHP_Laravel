@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 11, 2018 at 11:37 PM
+-- Generation Time: Apr 12, 2018 at 04:56 PM
 -- Server version: 10.1.30-MariaDB
 -- PHP Version: 7.2.1
 
@@ -32,7 +32,7 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `fillTimesheet` (IN `loggedInUser` INT, IN `projID` INT, IN `datetimesheet` DATE, IN `tsStartTime` TIME, IN `tsEndTime` TIME)  NO SQL
 BEGIN
-	IF EXISTS( select * from timesheet where UserID = loggedInUser and ProjectID = projID and ((tsEndTime between tsStartTime and StartTime) OR (tsStartTime between EndTime and tsEndTime)))
+	IF EXISTS( select * from timesheet where UserID = loggedInUser and ProjectID = projID and Date = datetimesheet and ((tsEndTime <= StartTime and tsStartTime < StartTime) OR (tsEndTime > EndTime and tsStartTime >= EndTime )))
     THEN 
 		insert into timesheet (UserID, ProjectID, Date, StartTime, EndTime) values (loggedInUser, projID, datetimesheet, tsStartTime, tsEndTime);
     END IF;
@@ -96,16 +96,25 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `showProjectDetails` (IN `getselecte
 	select * from project where ProjectID = getselectedproj;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `viewEmployeeTimesheet` (IN `loggedInUser` INT)  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `viewEmployeeTimesheet` (IN `loggedInUser` INT, IN `userRole` INT)  BEGIN
 	
 	
-	set @sqlQuery = "select *, DATE_FORMAT(ts.Date, '%m/%d/%Y') as DateFormatted, TIME_FORMAT(ts.StartTime, '%h:%i %p') as StartTimeFormatted, TIME_FORMAT(ts.EndTime, '%h:%i %p') as EndTimeFormatted, TIME_FORMAT(TIMEDIFF(ts.EndTime,ts.StartTime), '%H:%i') as HoursWorked from timesheet ts inner join project p on ts.ProjectID = p.ProjectID ";
+	set @sqlQuery = "select *, DATE_FORMAT(ts.Date, '%m/%d/%Y') as DateFormatted, TIME_FORMAT(ts.StartTime, '%h:%i %p') as StartTimeFormatted, TIME_FORMAT(ts.EndTime, '%h:%i %p') as EndTimeFormatted, TIME_FORMAT(TIMEDIFF(ts.EndTime,ts.StartTime), '%H:%i') as HoursWorked, (ts.Date BETWEEN DATE_SUB( CURDATE( ) , INTERVAL (dayofweek(CURDATE())+5) DAY ) AND DATE_ADD( CURDATE( ) , INTERVAL (dayofweek(CURDATE())) DAY )) as CanEdit from timesheet ts inner join project p on ts.ProjectID = p.ProjectID";
     
     IF (loggedInUser <> 0)
     THEN
-    	set @sqlQuery = CONCAT(@sqlQuery,'where UserID = ', loggedInUser, ';');
+    BEGIN
+    	IF (userRole = 2)
+        THEN
+        	set @sqlQuery = CONCAT(@sqlQuery,' inner join employee e on ts.UserID=e.UserID where ts.ProjectID in (select ProjectID from project where SupervisorID = ',
+                                   loggedInUser, ');');
+        ELSE
+    		set @sqlQuery = CONCAT(@sqlQuery,' where ts.UserID = ', loggedInUser, ';');
+        END IF;
+        
+    END;
     ELSE
-    	set @sqlQuery = CONCAT(@sqlQuery,'inner join employee e on e.UserID=ts.UserID;');
+    	set @sqlQuery = CONCAT(@sqlQuery,' inner join employee e on e.UserID=ts.UserID;');
     END IF;
     PREPARE stmt FROM @sqlQuery;
     EXECUTE stmt;
@@ -151,9 +160,9 @@ INSERT INTO `employee` (`UserID`, `password`, `FullName`, `Address`, `EmailID`, 
 (1834535, '$2y$10$2Ll4yMhw.2YDQggDgIi5qONzrla4aXzTZNPLbtkZNocmXhDS.J.P2', 'Komal Thakkar', 'DeKalb', 'komalthakkar30@yahoo.in', 'Software Developer', '90000', 3, 'NGvjBKwP1qvN8NzkDtFmO6UxqDJOOtUHnqpB21YBFEOCoxiGnVpIi1n2e1Ru', NULL, NULL),
 (1835791, '1835791', 'Priya Mukherjee', 'Thornhill Dr, Carol Stream, IL, 60188', 'priyamukherjee@gmail.com', 'Software Developer', '70000', 3, NULL, NULL, NULL),
 (1875643, '1875643', 'John Bolton', 'San Jose, California, 54636', 'johnbolton@gmail.com', 'Test Engineer', '65000', 2, NULL, NULL, NULL),
-(1875644, '$2y$10$DfqPkf09pZ0hgxbVwe08ouk.yLMOjmEOZqmeiCrartVZzNvmlvK6C', 'Olivia', 'California', 'olivia@gmail.com', 'Administrator', '90000', 1, 'dLH8lubLnAyCgwJHLbtAOwwsO2Nbxco9HQY0fJlxdGAz4KOa4UHtUvzUAd3v', NULL, NULL),
-(1875645, '$2y$10$wqp7zyNdF1lsfVoaG8JtrOw1xmAOBw3nQEBl4AMxJHcqAI88XPaQG', 'Keerthi Sai', 'Weeling, Il, 60165', 'keerthisai@gmail.com', 'Software Engineer', '90000', 2, 'bYowxBKpsZbIjAcNGS3USB63tYHsHJcygwoNqrUFNaS3mbAo7u1agWp1sSl7', NULL, NULL),
-(1875646, '$2y$10$iTAAgFaxD.xc/y/epUccNuD5TwRuJtqx6MfVhEeivYUt1Ou2S9SHK', 'Peter Pan', 'Tempe, Arizona, 41827', 'peterpan@gmail.com', 'Network Engineer', '80000', 3, 'EQ0fQcB1jVSLEjYy93QRNeHjLmqnTZfcWqui5DRCasb4OXt1AdqLDu4EDcKG', NULL, NULL);
+(1875644, '$2y$10$DfqPkf09pZ0hgxbVwe08ouk.yLMOjmEOZqmeiCrartVZzNvmlvK6C', 'Olivia', 'California', 'olivia@gmail.com', 'Administrator', '90000', 1, 'ucaxITsHk1UU4Mr3ezZPUyLntvA1ShrRNGyQT16ZdcTdLozoAmKmr0gnA2c3', NULL, NULL),
+(1875645, '$2y$10$wqp7zyNdF1lsfVoaG8JtrOw1xmAOBw3nQEBl4AMxJHcqAI88XPaQG', 'Keerthi Sai', 'Weeling, Il, 60165', 'keerthisai@gmail.com', 'Software Engineer', '90000', 2, 'xUN31Q9zpUDURaz1obSOFChTGwl5bpPe3DmbbQB75XIOIIgacmgwVR4rBwDn', NULL, NULL),
+(1875646, '$2y$10$iTAAgFaxD.xc/y/epUccNuD5TwRuJtqx6MfVhEeivYUt1Ou2S9SHK', 'Peter Pan', 'Tempe, Arizona, 41827', 'peterpan@gmail.com', 'Network Engineer', '80000', 3, 'B13sp4Zk9INCvNjBxZLb6A0seRFsnCrGaCPl1RmuLqAl2am6xZnZpV7McB2z', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -216,8 +225,10 @@ INSERT INTO `team` (`UserID`, `ProjectID`, `updated_at`) VALUES
 (1835791, 100001, NULL),
 (1835791, 100004, NULL),
 (1835791, 100005, NULL),
+(1875643, 100002, NULL),
 (1875644, 100005, NULL),
-(1875646, 100001, NULL);
+(1875646, 100001, NULL),
+(1875646, 100002, NULL);
 
 -- --------------------------------------------------------
 
@@ -243,10 +254,16 @@ INSERT INTO `timesheet` (`TimesheetID`, `UserID`, `ProjectID`, `Date`, `StartTim
 (1, 1875644, 100005, '2018-04-10', '08:00:00', '18:00:00', NULL),
 (2, 1875644, 100005, '2018-03-20', '11:30:00', '16:30:00', NULL),
 (3, 1875646, 100001, '2018-04-03', '09:30:00', '10:30:00', '2018-04-11 21:16:16'),
-(4, 1875646, 100001, '2018-04-03', '08:00:00', '10:30:00', '2018-04-11 20:23:25'),
+(4, 1875646, 100001, '2018-04-02', '08:00:00', '10:30:00', '2018-04-11 20:23:25'),
 (5, 1875646, 100001, '2018-03-28', '11:00:00', '15:00:00', NULL),
-(6, 1875646, 100001, '2018-03-28', '11:00:00', '15:00:00', NULL),
-(7, 1875646, 100001, '2018-04-11', '11:00:00', '17:00:00', NULL);
+(7, 1875646, 100001, '2018-04-01', '11:00:00', '17:00:00', NULL),
+(8, 1875646, 100002, '2018-04-12', '09:30:00', '13:30:00', NULL),
+(9, 1875646, 100002, '2018-04-12', '07:00:00', '09:00:00', NULL),
+(10, 1875646, 100002, '2018-04-12', '13:30:00', '17:00:00', NULL),
+(12, 1875646, 100002, '2018-04-12', '12:00:00', '18:00:00', NULL),
+(13, 1875646, 100002, '2018-04-13', '10:00:00', '18:00:00', '2018-04-12 05:56:27'),
+(15, 1875646, 100002, '2018-04-13', '18:00:00', '20:00:00', NULL),
+(16, 1875646, 100002, '2018-04-13', '08:00:00', '10:00:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -326,7 +343,7 @@ ALTER TABLE `project`
 -- AUTO_INCREMENT for table `timesheet`
 --
 ALTER TABLE `timesheet`
-  MODIFY `TimesheetID` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `TimesheetID` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `user_role`

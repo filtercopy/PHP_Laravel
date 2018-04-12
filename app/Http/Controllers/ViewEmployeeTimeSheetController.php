@@ -18,16 +18,13 @@ class ViewEmployeeTimeSheetController extends Controller
     {
 		  $loggedInUser = Auth::user()->UserID;
 
-      //$timesheet_details = DB::select('CALL viewEmployeeTimesheet(0)');
-
       //Show All Employees Timesheet if it's Admin
       if(Auth::user()->Role == 1) {
-
-        $timesheet_details = DB::select("select *, DATE_FORMAT(ts.Date, '%m/%d/%Y') as DateFormatted, TIME_FORMAT(ts.StartTime, '%h:%i %p') as StartTimeFormatted, TIME_FORMAT(ts.EndTime, '%h:%i %p') as EndTimeFormatted, TIME_FORMAT(TIMEDIFF(ts.EndTime,ts.StartTime), '%H:%i') as HoursWorked, (ts.Date >= CURDATE()-14) as CanEdit from timesheet ts inner join project p on ts.ProjectID = p.ProjectID inner join employee e on e.UserID=ts.UserID");
-      } else {
-
+        $timesheet_details = DB::select('CALL viewEmployeeTimesheet(0,0)');
+      } 
+      else {
         //Show All Employees Timesheet, working under logged in Supervisor's projects
-        $timesheet_details = DB::select("select *, DATE_FORMAT(ts.Date, '%m/%d/%Y') as DateFormatted, TIME_FORMAT(ts.StartTime, '%h:%i %p') as StartTimeFormatted, TIME_FORMAT(ts.EndTime, '%h:%i %p') as EndTimeFormatted, TIME_FORMAT(TIMEDIFF(ts.EndTime,ts.StartTime), '%H:%i') as HoursWorked, (ts.Date >= CURDATE()-14) as CanEdit from timesheet ts inner join employee e on ts.UserID=e.UserID inner join project p on ts.ProjectID=p.ProjectID where ts.ProjectID in (select ProjectID from project where SupervisorID=$loggedInUser)");
+        $timesheet_details = DB::select('CALL viewEmployeeTimesheet(?,?)',array($loggedInUser,2));
       }
 
      	return view('viewemployeetimesheet', ['timesheet_details'=>$timesheet_details]);

@@ -18,14 +18,11 @@ class ViewTimeSheetController extends Controller
     {
     	$loggedInUser = Auth::user()->UserID;
       	$projects = DB::select('CALL viewProjects(?)', array($loggedInUser));
-      	//$timesheet_details = DB::select('CALL viewEmployeeTimesheet(?)', array($loggedInUser));
-
-      	$timesheet_details = DB::select("select *, DATE_FORMAT(ts.Date, '%m/%d/%Y') as DateFormatted, TIME_FORMAT(ts.StartTime, '%h:%i %p') as StartTimeFormatted, TIME_FORMAT(ts.EndTime, '%h:%i %p') as EndTimeFormatted, TIME_FORMAT(TIMEDIFF(ts.EndTime,ts.StartTime), '%H:%i') as HoursWorked, (ts.Date >= CURDATE()-14) as CanEdit from timesheet ts inner join project p on ts.ProjectID = p.ProjectID where UserID = $loggedInUser");
-
+      	$timesheet_details = DB::select('CALL viewEmployeeTimesheet(?,?)',array($loggedInUser,0));
+ 
       	return view('viewtimesheet', 
      		['projects'=>$projects, 
      		'timesheet_details'=>$timesheet_details]);
-
  	}
 
 	/*
@@ -40,7 +37,6 @@ class ViewTimeSheetController extends Controller
 	    $EndTime = $request->input('inputEndTime');
 	    
 	    $filltimesheet = DB::select('CALL fillTimesheet(?,?,?,?,?)', array($loggedInUser, $ProjectID, $Date, $StartTime, $EndTime));
-	    //dump($filltimesheet);
 	    return $this->index();
 	}
 

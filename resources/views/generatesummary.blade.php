@@ -53,7 +53,7 @@
 	</div>
 	</form>
 	<div id="projectDetails" class="{{ $getselectedproj != 0 ? '' : 'hidden'}}">
-	<div id="projectDetails" class="{{ $getselectedproj != 0 ? '' : 'hidden'}}">
+	<div id="getselectedreport" class="{{ $getselectedreport != 0 ? '' : 'hidden'}}">
 
   	<hr>
 	<h4>Summary Report</h4>
