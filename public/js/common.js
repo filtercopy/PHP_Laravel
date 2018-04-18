@@ -1,4 +1,35 @@
 $(document).ready(function(){
+    onChangeTimePeriod($('#reportSelection').val());
+
+    function onChangeTimePeriod(selectedVal) {
+        $('#inputStartDate, #fromDateSection, #inputEndDate, #endDateSection, #yearSection').hide();
+        $('#inputEndDate').removeAttr('readonly');
+        $('#inputStartDate, #inputEndDate').removeAttr('required');
+
+       if(selectedVal == 2) {
+            $('#inputStartDate').attr('required','');
+            $('#inputEndDate').attr('readonly','');
+            $('#inputStartDate, #fromDateSection, #inputEndDate, #endDateSection').show();
+       } else if(selectedVal == 3) {
+            $('#yearSection').show();
+       } else if(selectedVal == 4) {
+            $('#inputStartDate, #fromDateSection, #inputEndDate, #endDateSection').show();
+            $('#inputStartDate, #inputEndDate').attr('required','');
+       }
+    }
+    $('#reportSelection').on('change', function(e) {
+       var selectedVal = $(e.target).val();
+
+        onChangeTimePeriod(selectedVal);
+    });
+    $('#inputStartDate').on('change', function(e) {
+        if($('#reportSelection').val() == 2) {
+            var lastWeek=new Date(new Date($('#inputStartDate').val()).getTime() + 7 * 24 * 60 * 60 * 1000);
+            var day = ("0" + lastWeek.getDate()).slice(-2);
+            var month = ("0" + (lastWeek.getMonth() + 1)).slice(-2);
+            $('#inputEndDate').val(lastWeek.getFullYear()+'-'+month+'-'+day);
+        }
+    });
     /*
         $('#prjTable [data-toggle="popover"]').popover({
             trigger: 'focus',

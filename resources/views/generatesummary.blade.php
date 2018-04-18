@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-	<form action = "/generatereport" method="get">
+	<form id="generateForm" action = "/generatereport" method="get">
 	<div>
 		<h4>Generate Summary</h4>
 		<br>
@@ -17,7 +17,6 @@
 		      </select>
 		    </div>
 	  	</div>
-
 	  	<div class="form-group row">
 		    <label for="projSelection" class="col-lg-2 col-md-2 col-sm-4 col-xs-3 text-right">Time Period</label>
 		    <div class="col-lg-4 col-md-4 col-sm-5 col-xs-6">
@@ -30,16 +29,25 @@
 				</select>
 		    </div>
 	  	</div>
-	  	<div class="form-group row">
+	  	<div class="form-group row" id="fromDateSection">
 			<label for="inputStartTime" class="col-lg-2 col-md-2 col-sm-4 col-xs-3 text-right">From Date</label>
 			<div class="col-lg-4 col-md-4 col-sm-5 col-xs-6">
-				<input type="date" class="form-control" id="inputStartDate" name="inputStartDate" placeholder="Enter Start Date"/>
+				<input type="date" class="form-control" id="inputStartDate" name="inputStartDate" placeholder="Enter Start Date" value="{{ Request::get('inputStartDate') }}" />
 			</div>
 	    </div>
-	  	<div class="form-group row">
+	  	<div class="form-group row" id="endDateSection">
 			<label for="inputEndTime" class="col-lg-2 col-md-2 col-sm-4 col-xs-3 text-right">To Date</label>
 			<div class="col-lg-4 col-md-4 col-sm-5 col-xs-6">
-				<input type="date" class="form-control" id="inputEndDate" name="inputEndDate" placeholder="Enter End Date"/>
+				<input type="date" class="form-control" id="inputEndDate" name="inputEndDate" placeholder="Enter End Date" value="{{ Request::get('inputEndDate') }}" />
+			</div>
+	  	</div>
+	  	<div class="form-group row" id="yearSection">
+	  		<label for="yearSection" class="col-lg-2 col-md-2 col-sm-4 col-xs-3 text-right">Month & Year</label>
+			<div class="col-lg-2 col-md-2 col-sm-3 col-xs-3">
+				{{ Form::selectMonth('month', date('m'), ['class' => 'form-control']) }}
+			</div>
+			<div class="col-lg-2 col-md-2 col-sm-3 col-xs-3">
+				{{ Form::selectYear('year', date('Y')-10, date('Y'), date('Y'), ['class' => 'form-control']) }}
 			</div>
 	  	</div>
 

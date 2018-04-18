@@ -24,23 +24,24 @@
         <div class="col-lg-10 col-md-10 col-sm-10 col-xs-8">
             <h4>Project Details</h4>
         </div>
-        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4 text-right">
-            <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#addEmpModal">Add Employee</button>
-        </div>
     </div>
 
   
     @foreach ($show_projects as $show_projects)
     <div class="row">
       <label class="col-lg-2 col-md-2 col-sm-2 col-xs-3 text-right">Project ID</label><div class="col-lg-2 col-md-2 col-sm-2 col-xs-3" name="inputProjectID">{{ $show_projects->ProjectID }}</div>
-      <label class="col-lg-2 col-md-2 col-sm-2 col-xs-3 text-right">Customer Name</label><div class="col-col-lg-2 col-md-2 col-sm-2 col-xs-3">{{ $show_projects->CustomerName }}</div>
-    </div>
-    <div class="row">
       <label class="col-lg-2 col-md-2 col-sm-2 col-xs-3 text-right">Project Title</label><div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">{{ $show_projects->ProjectTitle }}</div>
+      <label class="col-lg-2 col-md-2 col-sm-2 col-xs-3 text-right">Customer Name</label><div class="col-col-lg-2 col-md-2 col-sm-2 col-xs-3">{{ $show_projects->CustomerName }}</div>
     </div>
     @endforeach
 
     <br><br>
+    <div class="row">
+        <div class="col-lg-offset-10 col-md-offset-10 col-sm-offset-10 col-xs-offset-8 col-lg-2 col-md-2 col-sm-2 col-xs-4 text-right">
+            <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#addEmpModal">Add Employee</button>
+        </div>
+    </div>
+    <br/>
     <div class="row">
       <div class="col-md-12">
         <div class="table-responsive">
