@@ -31,15 +31,24 @@ class GenerateReportController extends Controller
 
   	public function generatereport(Request $request)
     {	
-    	$projects = project::all();
+    	$loggedInUser = Auth::user()->UserID;
+
+      if(Auth::user()->Role == 1) {
+        $projects = project::all();
+      } else {
+        $projects = DB::select('CALL selectProjBySupervisor(?)', array($loggedInUser));
+      }
 
     	$getselectedproj = Input::get('projSelection');
     	$getreporttype = Input::get('reportSelection');
-    	$getstartdate = Input::get('inputStartDate');
-    	$getenddate = Input::get('inputEndDate');
+    	$getstartdate = Input::get('inputStartDate') ? Input::get('inputStartDate') : "2018-04-14";
+    	$getenddate = Input::get('inputEndDate') ? Input::get('inputEndDate') : "2018-04-14";
+      $getmonth = Input::get('month');
+      $getyear = Input::get('year');
 
       //Get the reports based on ReportType
- 			$reports = DB::select('CALL generateReport(?,?,?,?)',array($getselectedproj, $getreporttype, $getstartdate, $getenddate));
+ 			$reports = DB::select('CALL generateReport(?,?,?,?,?,?)',array($getselectedproj, $getreporttype, 
+        $getstartdate, $getenddate, $getmonth, $getyear));
 
       return view('generatesummary',
         array('projects'=>$projects, 

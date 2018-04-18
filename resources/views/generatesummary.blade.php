@@ -47,14 +47,14 @@
 				{{ Form::selectMonth('month', date('m'), ['class' => 'form-control']) }}
 			</div>
 			<div class="col-lg-2 col-md-2 col-sm-3 col-xs-3">
-				{{ Form::selectYear('year', date('Y')-10, date('Y'), date('Y'), ['class' => 'form-control']) }}
+				{{ Form::selectYear('year', date('Y'), date('Y')-10, date('Y'), ['class' => 'form-control']) }}
 			</div>
 	  	</div>
 
 	  	<br>
 	  	<div class="row">
 			<div class="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12">
-				<button type="button" class="btn btn-default col-lg-offset-5 col-lg-3 col-md-offset-5 col-md-3 col-sm-offset-5 col-sm-3 col-xs-offset-5 col-xs-3 pull-left" data-dismiss="modal">Reset</button>
+				<button type="button" class="hidden btn btn-default col-lg-offset-5 col-lg-3 col-md-offset-5 col-md-3 col-sm-offset-5 col-sm-3 col-xs-offset-5 col-xs-3 pull-left" data-dismiss="modal">Reset</button>
 				<button type="submit" class="btn btn-primary col-lg-3 col-md-3 col-sm-offset-1 col-sm-3 col-xs-3 pull-right">Generate</button>
 			</div>
 		</div>
@@ -97,7 +97,7 @@
 					  	<tbody>
 					  	@foreach ($reports as $report)
 					    <tr>
-					    	<td>{{ $report->Date }}</td>
+					    	<td>{{ $report->DateFormatted }}</td>
 							<td>{{ $report->UserID }}</td>
 							<td>{{ $report->FullName }}</td>
 							<td>{{ $report->StartTime }}</td>

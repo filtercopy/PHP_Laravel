@@ -32,7 +32,7 @@
                             <td>{{ $timesheet_detail->HoursWorked }}</td>                         
                             <td>
                               <p data-placement="top" data-toggle="tooltip" title="Edit">
-                              <button class="edit-modal btn btn-primary btn-xs {{ $timesheet_detail->CanEdit ? '' : 'disabled' }}" data-title="Edit" data-toggle="modal" data-id="{{$timesheet_detail->UserID}}" data-fullname="{{$timesheet_detail->FullName}}" data-projectid="{{$timesheet_detail->ProjectID}}" data-projecttitle="{{$timesheet_detail->ProjectTitle}}" data-date="{{$timesheet_detail->Date}}" data-starttime="{{$timesheet_detail->StartTime}}" data-endtime="{{$timesheet_detail->EndTime}}" data-hours="{{$timesheet_detail->HoursWorked}}">
+                              <button class="edit-modal btn btn-primary btn-xs {{ $timesheet_detail->CanEdit ? '' : 'disabled' }}" data-title="Edit" data-toggle="modal" data-id="{{$timesheet_detail->UserID}}" data-fullname="{{$timesheet_detail->FullName}}" data-projectid="{{$timesheet_detail->ProjectID}}" data-projecttitle="{{$timesheet_detail->ProjectTitle}}" data-date="{{$timesheet_detail->Date}}" data-starttime="{{$timesheet_detail->StartTime}}" data-endtime="{{$timesheet_detail->EndTime}}" data-hours="{{$timesheet_detail->HoursWorked}}" data-timesheetid="{{$timesheet_detail->TimesheetID}}" >
                               <span class="glyphicon glyphicon-edit"></span></button></p>
                           </td>
                         </tr>
@@ -51,6 +51,7 @@
                 <input type = "hidden" name = "_token" value = "{{ csrf_token() }}">
                 <input type = "hidden" id="inputEmployeeId" name="inputEmployeeId" />
                 <input type = "hidden" id="inputProjectId" name="inputProjectId" />
+                <input type = "hidden" id="inputTimesheetID" name="inputTimesheetID" />
                 <div class="modal-content">
                     <div class="modal-header">
                       <button type="button" class="close" data-dismiss="modal">&times;</button>

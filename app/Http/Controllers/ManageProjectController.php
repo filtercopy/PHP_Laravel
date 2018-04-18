@@ -16,7 +16,6 @@ class ManageProjectController extends Controller
     public function index()
     {
       $loggedInUser = Auth::user()->UserID;
-      $projects = [];
 
       if(Auth::user()->Role == 1) {
         $projects = project::all();
@@ -33,7 +32,14 @@ class ManageProjectController extends Controller
 
   	public function showprojectdetails(Request $request)
     {	
-    	$projects = project::all();
+      $loggedInUser = Auth::user()->UserID;
+
+    	if(Auth::user()->Role == 1) {
+        $projects = project::all();
+      } else {
+        $projects = DB::select('CALL selectProjBySupervisor(?)', array($loggedInUser));
+      }
+
     	$getselectedproj = Input::get('projSelection');
     	$show_projects = DB::select('CALL showProjectDetails(?)', array($getselectedproj));
     	$employees = DB::select('CALL showEmployeesByProject(?)',array($getselectedproj));

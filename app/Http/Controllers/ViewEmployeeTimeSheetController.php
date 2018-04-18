@@ -35,13 +35,14 @@ class ViewEmployeeTimeSheetController extends Controller
    */
   	public function updateTimesheet(Request $request)
     {
+      $TimesheetID = $request->input('inputTimesheetID');
     	$UserID = $request->input('inputEmployeeId');
 	    $ProjectID = $request->input('inputProjectId');
 	    $Date = $request->input('inputDate');
 	    $StartTime = $request->input('inputStartTime');
 	    $EndTime = $request->input('inputEndTime');
 
-		  Timesheet::where(['UserID'=> $UserID, 'ProjectID'=> $ProjectID, 'Date'=> $Date])
+		  Timesheet::where(['TimesheetID'=>$TimesheetID, 'UserID'=> $UserID, 'ProjectID'=> $ProjectID, 'Date'=> $Date])
             ->update(['StartTime' => $StartTime, 'EndTime' => $EndTime]);
 
     	return redirect('/employee/viewemployeetimesheet');

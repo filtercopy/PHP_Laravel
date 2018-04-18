@@ -130,6 +130,7 @@ $(document).ready(function(){
     $(document).on('click', '#timesheetTable .edit-modal:not(".disabled")', function() {
         $('#updateEmpTimesheetModal').modal('show');        
 
+        $('#updateEmpTimesheetModal #inputTimesheetID').val($(this).data('timesheetid'));
         $('#updateEmpTimesheetModal #inputEmployeeId').val($(this).data('id'));
         $('#updateEmpTimesheetModal #inputProjectId').val($(this).data('projectid'));
         $('#updateEmpTimesheetModal #inputEmployee').val($(this).data('id') + " - "+ $(this).data('fullname'));
