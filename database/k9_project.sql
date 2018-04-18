@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 12, 2018 at 04:56 PM
+-- Generation Time: Apr 18, 2018 at 11:29 PM
 -- Server version: 10.1.30-MariaDB
 -- PHP Version: 7.2.1
 
@@ -32,27 +32,35 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `fillTimesheet` (IN `loggedInUser` INT, IN `projID` INT, IN `datetimesheet` DATE, IN `tsStartTime` TIME, IN `tsEndTime` TIME)  NO SQL
 BEGIN
-	IF EXISTS( select * from timesheet where UserID = loggedInUser and ProjectID = projID and Date = datetimesheet and ((tsEndTime <= StartTime and tsStartTime < StartTime) OR (tsEndTime > EndTime and tsStartTime >= EndTime )))
+
+	IF NOT EXISTS ( select * from timesheet where UserID = loggedInUser and ProjectID = projID and Date = datetimesheet) 
+	THEN
+		insert into timesheet (UserID, ProjectID, Date, StartTime, EndTime) values (loggedInUser, projID, datetimesheet, tsStartTime, tsEndTime);
+	ELSEIF EXISTS(
+	select * from timesheet where UserID = loggedInUser and ProjectID = projID and Date = datetimesheet
+	having tsStartTime >= MAX(EndTime) AND tsEndTime > MAX(EndTime)
+	UNION
+	select * from timesheet where UserID = loggedInUser and ProjectID = projID and Date = datetimesheet
+	having tsStartTime < MIN(StartTime) AND tsEndTime <= MIN(StartTime))
     THEN 
 		insert into timesheet (UserID, ProjectID, Date, StartTime, EndTime) values (loggedInUser, projID, datetimesheet, tsStartTime, tsEndTime);
     END IF;
-END$$
+    END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `generateReport` (IN `getselectedproj` INT, IN `getreporttype` INT, IN `getstartdate` DATE, IN `getenddate` DATE)  NO SQL
+CREATE DEFINER=`root`@`localhost` PROCEDURE `generateReport` (IN `getselectedproj` INT, IN `getreporttype` INT, IN `getstartdate` DATE, IN `getenddate` DATE, IN `getmonth` INT, IN `getyear` INT)  NO SQL
 BEGIN
-	set @sqlQuery = "select *, TIME_FORMAT(ts.StartTime, '%h:%i %p') as StartTime, TIME_FORMAT(ts.EndTime, '%h:%i %p') as EndTime, TIME_FORMAT(TIMEDIFF(ts.EndTime,ts.StartTime), '%H:%i') as HoursWorked from timesheet ts inner join employee e on ts.UserID = e.UserID inner join project p on ts.ProjectID = p.ProjectID where ts.ProjectID = ";
+	set @sqlQuery = "select *, DATE_FORMAT(ts.Date, '%m/%d/%Y') as DateFormatted, TIME_FORMAT(ts.StartTime, '%h:%i %p') as StartTime, TIME_FORMAT(ts.EndTime, '%h:%i %p') as EndTime, TIME_FORMAT(TIMEDIFF(ts.EndTime,ts.StartTime), '%H:%i') as HoursWorked from timesheet ts inner join employee e on ts.UserID = e.UserID inner join project p on ts.ProjectID = p.ProjectID where ts.ProjectID = ";
     
     set @sqlQuery = concat(@sqlQuery, getselectedproj);
     
     CASE getreporttype
      WHEN 1 THEN set @sqlQuery = concat(@sqlQuery, " and ts.Date = CURDATE();"); 
-     WHEN 2 THEN set @sqlQuery = concat(@sqlQuery,  "  and ts.Date between DATE_SUB(CURDATE(),INTERVAL(WEEKDAY(CURDATE()))DAY) and CURDATE( ); ");
-     WHEN 3 THEN set @sqlQuery = concat(@sqlQuery, " and ts.Date >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH);");
-	  WHEN 4 THEN 
-       set @sqlQuery = concat(@sqlQuery, " and ts.Date >= DATE('",
-       getstartdate, "') and ts.Date <= DATE('", getenddate, "');");
+    -- WHEN 2 THEN set @sqlQuery = concat(@sqlQuery, " and ts.Date >= DATE('", getstartdate, "') and ts.Date <= DATE('", getenddate, "');");
+     WHEN 3 THEN set @sqlQuery = concat(@sqlQuery, " and MONTH(ts.Date) = ('", getmonth, "') and YEAR(ts.Date) = ('",getyear,"') ;");         
       ELSE
       BEGIN
+      	set @sqlQuery = concat(@sqlQuery, " and ts.Date >= DATE('",
+       getstartdate, "') and ts.Date <= DATE('", getenddate, "');");
       END;
     END CASE; 
     
@@ -160,9 +168,9 @@ INSERT INTO `employee` (`UserID`, `password`, `FullName`, `Address`, `EmailID`, 
 (1834535, '$2y$10$2Ll4yMhw.2YDQggDgIi5qONzrla4aXzTZNPLbtkZNocmXhDS.J.P2', 'Komal Thakkar', 'DeKalb', 'komalthakkar30@yahoo.in', 'Software Developer', '90000', 3, 'NGvjBKwP1qvN8NzkDtFmO6UxqDJOOtUHnqpB21YBFEOCoxiGnVpIi1n2e1Ru', NULL, NULL),
 (1835791, '1835791', 'Priya Mukherjee', 'Thornhill Dr, Carol Stream, IL, 60188', 'priyamukherjee@gmail.com', 'Software Developer', '70000', 3, NULL, NULL, NULL),
 (1875643, '1875643', 'John Bolton', 'San Jose, California, 54636', 'johnbolton@gmail.com', 'Test Engineer', '65000', 2, NULL, NULL, NULL),
-(1875644, '$2y$10$DfqPkf09pZ0hgxbVwe08ouk.yLMOjmEOZqmeiCrartVZzNvmlvK6C', 'Olivia', 'California', 'olivia@gmail.com', 'Administrator', '90000', 1, 'ucaxITsHk1UU4Mr3ezZPUyLntvA1ShrRNGyQT16ZdcTdLozoAmKmr0gnA2c3', NULL, NULL),
-(1875645, '$2y$10$wqp7zyNdF1lsfVoaG8JtrOw1xmAOBw3nQEBl4AMxJHcqAI88XPaQG', 'Keerthi Sai', 'Weeling, Il, 60165', 'keerthisai@gmail.com', 'Software Engineer', '90000', 2, 'xUN31Q9zpUDURaz1obSOFChTGwl5bpPe3DmbbQB75XIOIIgacmgwVR4rBwDn', NULL, NULL),
-(1875646, '$2y$10$iTAAgFaxD.xc/y/epUccNuD5TwRuJtqx6MfVhEeivYUt1Ou2S9SHK', 'Peter Pan', 'Tempe, Arizona, 41827', 'peterpan@gmail.com', 'Network Engineer', '80000', 3, 'B13sp4Zk9INCvNjBxZLb6A0seRFsnCrGaCPl1RmuLqAl2am6xZnZpV7McB2z', NULL, NULL);
+(1875644, '$2y$10$DfqPkf09pZ0hgxbVwe08ouk.yLMOjmEOZqmeiCrartVZzNvmlvK6C', 'Olivia', 'California', 'olivia@gmail.com', 'Administrator', '90000', 1, 'E8mSIf3qcAPyrVLddQhCVx0wPcgLdq2j133Xz4oJOgX49IorkXQfwdV6aCUm', NULL, NULL),
+(1875645, '$2y$10$wqp7zyNdF1lsfVoaG8JtrOw1xmAOBw3nQEBl4AMxJHcqAI88XPaQG', 'Keerthi Sai', 'Weeling, Il, 60165', 'keerthisai@gmail.com', 'Software Engineer', '90000', 2, 'igTIfIkVtKR7OOteVOVUmSlIoCWhRrjOz60BRlpNhTpAmZjGbgEkkwahHuHO', NULL, NULL),
+(1875646, '$2y$10$iTAAgFaxD.xc/y/epUccNuD5TwRuJtqx6MfVhEeivYUt1Ou2S9SHK', 'Peter Pan', 'Tempe, Arizona, 41827', 'peterpan@gmail.com', 'Network Engineer', '80000', 3, 'RVDr7LiBwfsLzCLYe8602yyI07yZvF8jRuRjdhTNKsgMq7DI0EnWfTwkct0u', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -251,19 +259,11 @@ CREATE TABLE `timesheet` (
 --
 
 INSERT INTO `timesheet` (`TimesheetID`, `UserID`, `ProjectID`, `Date`, `StartTime`, `EndTime`, `updated_at`) VALUES
-(1, 1875644, 100005, '2018-04-10', '08:00:00', '18:00:00', NULL),
-(2, 1875644, 100005, '2018-03-20', '11:30:00', '16:30:00', NULL),
-(3, 1875646, 100001, '2018-04-03', '09:30:00', '10:30:00', '2018-04-11 21:16:16'),
-(4, 1875646, 100001, '2018-04-02', '08:00:00', '10:30:00', '2018-04-11 20:23:25'),
-(5, 1875646, 100001, '2018-03-28', '11:00:00', '15:00:00', NULL),
-(7, 1875646, 100001, '2018-04-01', '11:00:00', '17:00:00', NULL),
-(8, 1875646, 100002, '2018-04-12', '09:30:00', '13:30:00', NULL),
-(9, 1875646, 100002, '2018-04-12', '07:00:00', '09:00:00', NULL),
-(10, 1875646, 100002, '2018-04-12', '13:30:00', '17:00:00', NULL),
-(12, 1875646, 100002, '2018-04-12', '12:00:00', '18:00:00', NULL),
-(13, 1875646, 100002, '2018-04-13', '10:00:00', '18:00:00', '2018-04-12 05:56:27'),
-(15, 1875646, 100002, '2018-04-13', '18:00:00', '20:00:00', NULL),
-(16, 1875646, 100002, '2018-04-13', '08:00:00', '10:00:00', NULL);
+(30, 1875646, 100001, '2018-04-17', '16:30:00', '19:30:00', '2018-04-18 20:37:45'),
+(35, 1875646, 100001, '2018-04-14', '18:30:00', '19:30:00', '2018-04-18 05:28:44'),
+(36, 1875645, 100002, '2018-04-17', '10:00:00', '15:00:00', NULL),
+(37, 1875644, 100005, '2018-04-18', '10:00:00', '15:00:00', '2018-04-18 05:40:48'),
+(38, 1875644, 100005, '2018-03-09', '15:00:00', '19:00:00', '2018-04-18 05:41:45');
 
 -- --------------------------------------------------------
 
@@ -343,7 +343,7 @@ ALTER TABLE `project`
 -- AUTO_INCREMENT for table `timesheet`
 --
 ALTER TABLE `timesheet`
-  MODIFY `TimesheetID` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `TimesheetID` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `user_role`
