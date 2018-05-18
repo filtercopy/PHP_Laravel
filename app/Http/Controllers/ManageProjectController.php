@@ -58,7 +58,7 @@ class ManageProjectController extends Controller
     	$getselectedemp = Input::get('addEmployeesList');
       $getselectedproj = Input::get('getselectedproj');
 
-      if(count($getselectedemp) > 0)
+      if($getselectedemp && count($getselectedemp) > 0)
       {
         foreach ($getselectedemp as $id)
         {
